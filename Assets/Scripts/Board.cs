@@ -66,14 +66,18 @@ public class Board : MonoBehaviour
     {        
         for (var j = 1; j <= 3; j++)
             if ( Cells[1, j].GetPlayerId() == Cells[2, j].GetPlayerId() && Cells[3, j].GetPlayerId() == Cells[2, j].GetPlayerId())
-                return Cells[1, j].GetPlayerId();
+                if(Cells[1, j].GetPlayerId()!=0)
+                    return Cells[1, j].GetPlayerId();
         for (var i = 1; i <= 3; i++)
             if ( Cells[i,1].GetPlayerId() == Cells[i,2].GetPlayerId() && Cells[i,3].GetPlayerId() == Cells[i,2].GetPlayerId())
-                return Cells[i, 1].GetPlayerId();
+                if (Cells[i, 1].GetPlayerId() != 0)
+                    return Cells[i, 1].GetPlayerId();
         if (Cells[1, 1].GetPlayerId() == Cells[2, 2].GetPlayerId() && Cells[2, 2].GetPlayerId() == Cells[3, 3].GetPlayerId())
-            return Cells[1, 1].GetPlayerId();
+            if (Cells[1, 1].GetPlayerId() != 0)
+                return Cells[1, 1].GetPlayerId();
         if (Cells[3, 1].GetPlayerId() == Cells[2, 2].GetPlayerId() && Cells[2, 2].GetPlayerId() == Cells[1, 3].GetPlayerId())
-            return Cells[3, 1].GetPlayerId();
+            if (Cells[3, 1].GetPlayerId() != 0)
+                return Cells[3, 1].GetPlayerId();
 
         return 0;
     }

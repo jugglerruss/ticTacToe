@@ -27,20 +27,24 @@ public class ClickPosition : MonoBehaviourPun
                     if (!CompareWithCurrentFigure(Figure.ActiveFigure))
                         return;
                 photonView.RPC("RPC_ClickOnPosition", RpcTarget.All, Figure.ActiveFigure.photonView.ViewID);
-                Player.MyPlayer.RPC_ItsNotMyTurn(true);   
             }        
     }
     public void DoSelect(Figure activeFigure)
     {
         if (currentFigure==null || activeFigure.Strength > currentFigure.Strength)
         {
-            meshRender.sharedMaterial = SelectMaterial;
+            //meshRender.sharedMaterial = SelectMaterial;
+            Color color = meshRender.sharedMaterial.color;
+            color = new Color(1,1,0);
+            meshRender.sharedMaterial.color = color;
         }
     }
     public void DeSelect()
     {
-        Debug.LogError("DeSelect");
-        meshRender.sharedMaterial = DefaultMaterial;
+        //meshRender.sharedMaterial = DefaultMaterial;
+        Color color = meshRender.sharedMaterial.color;
+        color = new Color(1, 1, 1); 
+        meshRender.sharedMaterial.color = color;
     }
     public int GetPlayerId()
     {
@@ -56,7 +60,8 @@ public class ClickPosition : MonoBehaviourPun
             currentFigure = activeFigure;
             if (!Board.MyBoard.CheckWin(currentFigure))
             {
-                
+                if(currentFigure.photonView.IsMine)
+                    Player.MyPlayer.RPC_ItsNotMyTurn(true);
             }
         }    
     }

@@ -6,30 +6,27 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(PhotonView))]
-public class Figure : MonoBehaviour
+[RequireComponent(typeof(Animator))]
+public class Figure : MonoBehaviourPun
 {
     #region Private Properties
     private bool selected;
     private bool placed;
     Rigidbody RB => GetComponent<Rigidbody>();
+    Animator animator => GetComponent<Animator>();
     #endregion
-
-    static Figure[] figures;
 
     #region Inpector Variables
     [SerializeField]
     public int PlayerId;
     #endregion
 
-    public PhotonView photonView { get; private set; }
     public static Figure ActiveFigure;
     public int Strength { get; set; }
 
     #region Unity Functions
     void Start()
     {
-        photonView = GetComponent<PhotonView>();
-        figures = FindObjectsOfType<Figure>(); 
     }
     private void OnMouseDown()
     {
@@ -39,15 +36,15 @@ public class Figure : MonoBehaviour
                    RpcTarget.All,
                    !selected);
     }
-
     #endregion
     #region User Interface
     public void BeginDrag()
     {
         ActiveFigure = this;
-        foreach (Figure dd in figures)
-            if (dd != this)
-                dd.EndDrag();
+        if(photonView.IsMine)
+            foreach (Figure figure in Player.MyPlayer.Figures)
+                if (figure != this)
+                    figure.EndDrag();
         selected = true;
         transform.position += new Vector3(0, 1);
         RB.isKinematic = true;
@@ -76,6 +73,23 @@ public class Figure : MonoBehaviour
                   "RPC_Deactivate",
                   RpcTarget.All);
     }
+
+    #endregion
+
+    #region Animation
+    public static void StartWinAnimation()
+    {
+        foreach (Figure figure in Player.MyPlayer.Figures)
+            figure.animator.SetBool("isWin", true);
+    }
+    public static void StartLoseAnimation()
+    {
+        foreach (Figure figure in Player.MyPlayer.Figures)
+            figure.animator.SetBool("isLose", true);
+    }
+    #endregion
+
+    #region PunRPC
     [PunRPC]
     public void RPC_Deactivate()
     {
@@ -87,7 +101,7 @@ public class Figure : MonoBehaviour
         if (selectedReceived != selected && selectedReceived)
         {
             BeginDrag();
-            if(photonView.IsMine)
+            if (photonView.IsMine)
                 Board.MyBoard.ShowAvaliblePositions(this);
         }
         if (selectedReceived != selected && !selectedReceived)
@@ -95,6 +109,5 @@ public class Figure : MonoBehaviour
             EndDrag();
         }
     }
-
     #endregion
 }

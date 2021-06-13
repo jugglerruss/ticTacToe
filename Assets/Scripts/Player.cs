@@ -16,21 +16,28 @@ public class Player : MonoBehaviourPun
 
     public bool isMyTurn { get; private set; }
     public static Player MyPlayer;
+    public Figure[] Figures { get; private set; }
     private void Start()
     {
-        if(photonView.IsMine)
-            InstantiateFigures();
+        GameObject[] figuresGameObjects;
+        if (photonView.IsMine)
+        {
+            figuresGameObjects = InstantiateFigures();
+            Figures = new Figure[figuresGameObjects.Length];
+            for (var i = 0; i < figuresGameObjects.Length; i++)
+                Figures[i] = figuresGameObjects[i].GetComponent<Figure>();
+        }
     }
     public void Victory()
     {
-        isMyTurn = false;
-
+        MyPlayer.isMyTurn = false;
+        Figure.StartWinAnimation();
         Debug.LogError(PhotonNetwork.NickName + " win");
     }
     public void Lose()
     {
-        isMyTurn = false;
-
+        MyPlayer.isMyTurn = false;
+        Figure.StartLoseAnimation();
         Debug.LogError(PhotonNetwork.NickName + " lose");
     }
     private GameObject[] InstantiateFigures()

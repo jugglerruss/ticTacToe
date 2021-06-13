@@ -37,6 +37,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             StartCoroutine(WaitingForPlayers());
 
     }
+    public override void OnJoinRandomFailed(short returnCode,string messages)
+    {
+        CreateRoom();
+    }
     private IEnumerator WaitingForPlayers()
     {
         Log("Waiting for players...");
