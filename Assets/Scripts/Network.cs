@@ -17,7 +17,6 @@ public class Network : MonoBehaviourPunCallbacks
     private bool firstPlayer;
     void Start()
     {
-        Debug.LogError("Start");
         GameObject player;
         if (PhotonNetwork.IsMasterClient)
         {

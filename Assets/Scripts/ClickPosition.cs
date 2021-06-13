@@ -7,21 +7,40 @@ using UnityEngine;
 [RequireComponent(typeof(PhotonView))]
 public class ClickPosition : MonoBehaviourPun
 {
-    private DragDrop currentFigure;
+    [SerializeField]
+    private Material SelectMaterial;
+
+    private Figure currentFigure;
+    private MeshRenderer meshRender;
+    private Material DefaultMaterial;
     private void Start()
     {
+        meshRender = GetComponent<MeshRenderer>();
+        DefaultMaterial = meshRender.material;
     }
     private void OnMouseDown()
     {
-        if( Player.MyPlayer.isMyTurn && DragDrop.ActiveFigure != null)
-            if (DragDrop.ActiveFigure.photonView.IsMine)
+        if( Player.MyPlayer.isMyTurn && Figure.ActiveFigure != null)
+            if (Figure.ActiveFigure.photonView.IsMine)
             {
                 if (currentFigure != null)
-                    if (!CompareWithCurrentFigure(DragDrop.ActiveFigure))
+                    if (!CompareWithCurrentFigure(Figure.ActiveFigure))
                         return;
-                photonView.RPC("RPC_ClickOnPosition", RpcTarget.All, DragDrop.ActiveFigure.photonView.ViewID);
+                photonView.RPC("RPC_ClickOnPosition", RpcTarget.All, Figure.ActiveFigure.photonView.ViewID);
                 Player.MyPlayer.RPC_ItsNotMyTurn(true);   
             }        
+    }
+    public void DoSelect(Figure activeFigure)
+    {
+        if (currentFigure==null || activeFigure.Strength > currentFigure.Strength)
+        {
+            meshRender.sharedMaterial = SelectMaterial;
+        }
+    }
+    public void DeSelect()
+    {
+        Debug.LogError("DeSelect");
+        meshRender.sharedMaterial = DefaultMaterial;
     }
     public int GetPlayerId()
     {
@@ -31,19 +50,19 @@ public class ClickPosition : MonoBehaviourPun
     [PunRPC]
     private void RPC_ClickOnPosition(int activeFigureId)
     {
-        var activeFigure = DragDrop.GetAll().Where(f => f.photonView.ViewID == activeFigureId).First();
+        var activeFigure = PhotonView.Find(activeFigureId).GetComponent<Figure>();
         if (activeFigure.Placing(transform.position))
         {
             currentFigure = activeFigure;
-            if (!Board.CheckWin(currentFigure))
+            if (!Board.MyBoard.CheckWin(currentFigure))
             {
                 
             }
         }    
     }
-    private bool CompareWithCurrentFigure(DragDrop activeFigure)
+    private bool CompareWithCurrentFigure(Figure activeFigure)
     {
-        if (activeFigure.transform.localScale.x > currentFigure.transform.localScale.x)
+        if (activeFigure.Strength > currentFigure.Strength)
         {
             currentFigure.Deactivate();
             return true;

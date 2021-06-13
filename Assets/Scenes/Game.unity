@@ -178,6 +178,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
+  - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -233,6 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a69a0fafa87c304d875af21e04d5607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectMaterial: {fileID: 2100000, guid: 69c13b39b2771234091126d55ff4d261, type: 2}
 --- !u!114 &91099245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,6 +312,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -365,6 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a69a0fafa87c304d875af21e04d5607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectMaterial: {fileID: 2100000, guid: 69c13b39b2771234091126d55ff4d261, type: 2}
 --- !u!114 &138692530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +446,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -497,6 +502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a69a0fafa87c304d875af21e04d5607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectMaterial: {fileID: 2100000, guid: 69c13b39b2771234091126d55ff4d261, type: 2}
 --- !u!114 &184263072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,6 +599,85 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &223974226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 223974229}
+  - component: {fileID: 223974228}
+  - component: {fileID: 223974227}
+  m_Layer: 5
+  m_Name: WinLoseText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &223974227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223974226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.735849, g: 0.16313633, b: 0.16313633, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: e00995507c2406448b4c8429136104dd, type: 3}
+    m_FontSize: 53
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 60
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: 
+--- !u!222 &223974228
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223974226}
+  m_CullTransparentMesh: 1
+--- !u!224 &223974229
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223974226}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1101558465}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -2.768, y: 0.8881}
+  m_SizeDelta: {x: 474.46, y: 127.6942}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &259861948
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,6 +802,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
+  - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -772,6 +858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a69a0fafa87c304d875af21e04d5607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectMaterial: {fileID: 2100000, guid: 69c13b39b2771234091126d55ff4d261, type: 2}
 --- !u!114 &353353983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -849,6 +936,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
+  - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -904,6 +992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a69a0fafa87c304d875af21e04d5607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectMaterial: {fileID: 2100000, guid: 69c13b39b2771234091126d55ff4d261, type: 2}
 --- !u!114 &477264832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1236,6 +1325,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
+  - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1291,6 +1381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a69a0fafa87c304d875af21e04d5607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectMaterial: {fileID: 2100000, guid: 69c13b39b2771234091126d55ff4d261, type: 2}
 --- !u!114 &814757879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1402,6 +1493,7 @@ GameObject:
   - component: {fileID: 1101558464}
   - component: {fileID: 1101558463}
   - component: {fileID: 1101558462}
+  - component: {fileID: 1101558466}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1482,6 +1574,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1190896191}
+  - {fileID: 223974229}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1490,6 +1583,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1101558466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101558461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 487a6a8d93612224b8bf143356b84b46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WinLoseText: {fileID: 223974227}
 --- !u!1 &1109438971
 GameObject:
   m_ObjectHideFlags: 0
@@ -1610,6 +1716,36 @@ MonoBehaviour:
   - {fileID: 1541461687}
   - {fileID: 1920704634}
   - {fileID: 814757878}
+  OnWin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1101558466}
+        m_TargetAssemblyTypeName: UI, Assembly-CSharp
+        m_MethodName: MessageWinLose
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnLose:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1101558466}
+        m_TargetAssemblyTypeName: UI, Assembly-CSharp
+        m_MethodName: MessageWinLose
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1158674114
 Transform:
   m_ObjectHideFlags: 0
@@ -1821,6 +1957,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1876,6 +2013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a69a0fafa87c304d875af21e04d5607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectMaterial: {fileID: 2100000, guid: 69c13b39b2771234091126d55ff4d261, type: 2}
 --- !u!114 &1497467839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1953,6 +2091,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
+  - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2008,6 +2147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a69a0fafa87c304d875af21e04d5607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectMaterial: {fileID: 2100000, guid: 69c13b39b2771234091126d55ff4d261, type: 2}
 --- !u!114 &1541461688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2168,6 +2308,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2223,6 +2364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a69a0fafa87c304d875af21e04d5607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectMaterial: {fileID: 2100000, guid: 69c13b39b2771234091126d55ff4d261, type: 2}
 --- !u!114 &1920704635
 MonoBehaviour:
   m_ObjectHideFlags: 0

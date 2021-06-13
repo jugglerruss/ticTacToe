@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(PhotonView))]
-public class DragDrop : MonoBehaviour
+public class Figure : MonoBehaviour
 {
     #region Private Properties
     private bool selected;
@@ -14,7 +14,7 @@ public class DragDrop : MonoBehaviour
     Rigidbody RB => GetComponent<Rigidbody>();
     #endregion
 
-    static DragDrop[] dragDrops;
+    static Figure[] figures;
 
     #region Inpector Variables
     [SerializeField]
@@ -22,17 +22,17 @@ public class DragDrop : MonoBehaviour
     #endregion
 
     public PhotonView photonView { get; private set; }
-    public static DragDrop ActiveFigure;
+    public static Figure ActiveFigure;
+    public int Strength { get; set; }
 
     #region Unity Functions
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-        dragDrops = FindObjectsOfType<DragDrop>(); 
+        figures = FindObjectsOfType<Figure>(); 
     }
     private void OnMouseDown()
     {
-        Debug.LogError(Player.MyPlayer.isMyTurn);
         if (photonView.IsMine && Player.MyPlayer.isMyTurn && !selected && !placed)
             photonView.RPC(
                    "RPC_UpdateFigure",
@@ -42,14 +42,10 @@ public class DragDrop : MonoBehaviour
 
     #endregion
     #region User Interface
-    public static DragDrop[] GetAll()
-    {
-        return dragDrops;
-    }
     public void BeginDrag()
     {
         ActiveFigure = this;
-        foreach (DragDrop dd in dragDrops)
+        foreach (Figure dd in figures)
             if (dd != this)
                 dd.EndDrag();
         selected = true;
@@ -60,6 +56,8 @@ public class DragDrop : MonoBehaviour
     {
         selected = false;
         RB.isKinematic = false;
+        if (photonView.IsMine)
+            Board.MyBoard.HideAllPositions();
     }
     public bool Placing(Vector3 cellPosition)
     {
@@ -89,6 +87,8 @@ public class DragDrop : MonoBehaviour
         if (selectedReceived != selected && selectedReceived)
         {
             BeginDrag();
+            if(photonView.IsMine)
+                Board.MyBoard.ShowAvaliblePositions(this);
         }
         if (selectedReceived != selected && !selectedReceived)
         {

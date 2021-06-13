@@ -21,7 +21,18 @@ public class Player : MonoBehaviourPun
         if(photonView.IsMine)
             InstantiateFigures();
     }
+    public void Victory()
+    {
+        isMyTurn = false;
 
+        Debug.LogError(PhotonNetwork.NickName + " win");
+    }
+    public void Lose()
+    {
+        isMyTurn = false;
+
+        Debug.LogError(PhotonNetwork.NickName + " lose");
+    }
     private GameObject[] InstantiateFigures()
     {
         GameObject[] figures = new GameObject[6];
@@ -48,7 +59,8 @@ public class Player : MonoBehaviourPun
         var figure = PhotonView.Find(figureViewID).transform;
         figure.SetParent(transform);
         figure.localScale -= new Vector3(SCALE_KOEF, SCALE_KOEF, SCALE_KOEF) * i;
-        figure.localPosition = _figurePrefab.transform.localPosition + new Vector3(i - i * 1.5f * SCALE_KOEF, 0, 0);
+        figure.localPosition = _figurePrefab.transform.localPosition + new Vector3(i * 1.4f - i * 4 * SCALE_KOEF, 0, 0);
+        figure.GetComponent<Figure>().Strength = 10 - i;
     }
     [PunRPC]
     public void RPC_ItsMyTurn(bool deactivateOthers)
