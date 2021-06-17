@@ -1,22 +1,19 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(PhotonView))]
 public class Player : MonoBehaviourPun
 {
-    const float SCALE_KOEF = 0.1f;
 
     [SerializeField]
     private Transform _cameraTransform;
     [SerializeField]
     private Transform _figurePrefab;
 
-    public bool isMyTurn { get; private set; }
-    public static Player MyPlayer;
+    public bool IsMyTurn { get; private set; }
     public Figure[] Figures { get; private set; }
+
+    public static Player My;
     private void Start()
     {
         GameObject[] figuresGameObjects;
@@ -30,39 +27,36 @@ public class Player : MonoBehaviourPun
     }
     public void Victory()
     {
-        MyPlayer.isMyTurn = false;
+        My.IsMyTurn = false;
         Figure.StartWinAnimation();
         Debug.LogError(PhotonNetwork.NickName + " win");
     }
     public void Lose()
     {
-        MyPlayer.isMyTurn = false;
+        My.IsMyTurn = false;
         Figure.StartLoseAnimation();
         Debug.LogError(PhotonNetwork.NickName + " lose");
-    }
-    private GameObject[] InstantiateFigures()
-    {
-        GameObject[] figures = new GameObject[6];
-        for(var i=0; i < 6; i++)
-        {
-            figures[i] = PhotonNetwork.Instantiate(_figurePrefab.name, transform.position, _figurePrefab.transform.rotation);
-            photonView.RPC(
-                  "RPC_ChangePositionFigures",
-                  RpcTarget.All,figures[i].GetComponent<PhotonView>().ViewID, i);
-        }
-        return figures;
-    }
-    public static Player[] GetAll()
-    {
-        return FindObjectsOfType<Player>();
     }
     public Transform GetCameraPosition() {
         return _cameraTransform;
     }
-
+    private GameObject[] InstantiateFigures()
+    {
+        GameObject[] figures = new GameObject[6];
+        for (var i = 0; i < 6; i++)
+        {
+            figures[i] = PhotonNetwork.Instantiate(_figurePrefab.name, transform.position, _figurePrefab.transform.rotation);
+            photonView.RPC(
+                  "RPC_ChangePositionFigures",
+                  RpcTarget.All, figures[i].GetComponent<PhotonView>().ViewID, i);
+        }
+        return figures;
+    }
+    #region PunRPC
     [PunRPC]
     public void RPC_ChangePositionFigures(int figureViewID, int i)
     {
+        const float SCALE_KOEF = 0.1f;
         var figure = PhotonView.Find(figureViewID).transform;
         figure.SetParent(transform);
         figure.localScale -= new Vector3(SCALE_KOEF, SCALE_KOEF, SCALE_KOEF) * i;
@@ -72,15 +66,16 @@ public class Player : MonoBehaviourPun
     [PunRPC]
     public void RPC_ItsMyTurn(bool deactivateOthers)
     {
-        MyPlayer.isMyTurn = true;
+        My.IsMyTurn = true;
         if (deactivateOthers)
             photonView.RPC("RPC_ItsNotMyTurn", RpcTarget.OthersBuffered, false);
     }
     [PunRPC]
     public void RPC_ItsNotMyTurn(bool activateOthers)
     {
-        MyPlayer.isMyTurn = false;
+        My.IsMyTurn = false;
         if (activateOthers)
             photonView.RPC("RPC_ItsMyTurn", RpcTarget.OthersBuffered,false);
     }
+    #endregion
 }

@@ -7,25 +7,19 @@ using UnityEngine.Events;
 public class Board : MonoBehaviour
 {
     [SerializeField]
-    private ClickPosition[] _cellsLine1;
+    private Cell[] _cellsLine1;
     [SerializeField]
-    private ClickPosition[] _cellsLine2;
+    private Cell[] _cellsLine2;
     [SerializeField]
-    private ClickPosition[] _cellsLine3;
-    [SerializeField]
-    private UnityEvent OnWin;
-    [SerializeField]
-    private UnityEvent OnLose;
+    private Cell[] _cellsLine3;
 
-    private ClickPosition[,] cells = new ClickPosition[4, 4];
+    private Cell[,] cells = new Cell[4, 4];
     
-    public static ClickPosition[,] Cells;
-    public static Board MyBoard;
+    public static Cell[,] Cells;
+    public static Board My;
     private void Start()
     {
-        MyBoard = this;
-        if (OnWin == null)
-            OnWin = new UnityEvent();
+        My = this;
         for (var i = 1; i <= 3; i++) {
             cells[1, i] = _cellsLine1[i-1];
             cells[2, i] = _cellsLine2[i-1];
@@ -44,23 +38,6 @@ public class Board : MonoBehaviour
         for (var i = 1; i <= 3; i++)
             for (var j = 1; j <= 3; j++)
                 Cells[i, j].DeSelect();
-    }
-    public bool CheckWin(Figure currentFigure)
-    {
-        if (CheckLines() != 0)
-        {
-            if (currentFigure.photonView.IsMine)
-            {
-                OnWin.AddListener(Player.MyPlayer.Victory);
-                OnWin.Invoke();
-            }
-            else
-            {
-                OnLose.AddListener(Player.MyPlayer.Lose);
-                OnLose.Invoke();
-            }                
-        }
-        return false;
     }
     public int CheckLines()
     {        

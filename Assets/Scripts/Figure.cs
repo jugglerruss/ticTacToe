@@ -5,15 +5,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(PhotonView))]
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Animator),typeof(Rigidbody))]
 public class Figure : MonoBehaviourPun
 {
     #region Private Properties
     private bool selected;
     private bool placed;
-    Rigidbody RB => GetComponent<Rigidbody>();
-    Animator animator => GetComponent<Animator>();
+    private Rigidbody RB => GetComponent<Rigidbody>();
+    private Animator animator => GetComponent<Animator>();
     #endregion
 
     #region Inpector Variables
@@ -21,70 +20,67 @@ public class Figure : MonoBehaviourPun
     public int PlayerId;
     #endregion
 
+    #region Public Properties
     public static Figure ActiveFigure;
     public int Strength { get; set; }
+    #endregion
 
     #region Unity Functions
-    void Start()
-    {
-    }
     private void OnMouseDown()
     {
-        if (photonView.IsMine && Player.MyPlayer.isMyTurn && !selected && !placed)
+        if (photonView.IsMine && Player.My.IsMyTurn && !selected && !placed)
             photonView.RPC(
                    "RPC_UpdateFigure",
                    RpcTarget.All,
                    !selected);
     }
     #endregion
-    #region User Interface
-    public void BeginDrag()
+
+    #region Private methods
+    private void BeginDrag()
     {
         ActiveFigure = this;
         if(photonView.IsMine)
-            foreach (Figure figure in Player.MyPlayer.Figures)
+            foreach (Figure figure in Player.My.Figures)
                 if (figure != this)
                     figure.EndDrag();
         selected = true;
         transform.position += new Vector3(0, 1);
         RB.isKinematic = true;
     }
-    public void EndDrag()
+    private void EndDrag()
     {
         selected = false;
         RB.isKinematic = false;
         if (photonView.IsMine)
-            Board.MyBoard.HideAllPositions();
+            Board.My.HideAllPositions();
     }
-    public bool Placing(Vector3 cellPosition)
+
+    #endregion
+
+    #region Public methods
+    public void PlaceInPosition(Vector3 cellPosition)
     {
-        if (!placed)
-        {
-            transform.position = cellPosition + new Vector3(0, 2);
-            placed = true;
-            EndDrag();
-            return true;
-        }
-        return false;
+        transform.position = cellPosition + new Vector3(0, 2);
+        placed = true;
+        ActiveFigure = null;
+        EndDrag();
     }
     public void Deactivate()
     {
-        photonView.RPC(
-                  "RPC_Deactivate",
-                  RpcTarget.All);
+        photonView.RPC("RPC_Deactivate", RpcTarget.All);
     }
-
     #endregion
 
     #region Animation
     public static void StartWinAnimation()
     {
-        foreach (Figure figure in Player.MyPlayer.Figures)
+        foreach (Figure figure in Player.My.Figures)
             figure.animator.SetBool("isWin", true);
     }
     public static void StartLoseAnimation()
     {
-        foreach (Figure figure in Player.MyPlayer.Figures)
+        foreach (Figure figure in Player.My.Figures)
             figure.animator.SetBool("isLose", true);
     }
     #endregion
@@ -102,7 +98,7 @@ public class Figure : MonoBehaviourPun
         {
             BeginDrag();
             if (photonView.IsMine)
-                Board.MyBoard.ShowAvaliblePositions(this);
+                Board.My.ShowAvaliblePositions(this);
         }
         if (selectedReceived != selected && !selectedReceived)
         {

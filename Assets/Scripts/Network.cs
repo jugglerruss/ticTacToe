@@ -1,48 +1,43 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Network : MonoBehaviourPunCallbacks
 {
     [SerializeField]
-    private Camera Camera;
+    private Camera _camera;
     [SerializeField]
-    private GameObject PlayerPrefab1;
+    private GameObject _playerPrefab1;
     [SerializeField]
-    private GameObject PlayerPrefab2;
+    private GameObject _playerPrefab2;
 
-    private bool firstPlayer;
     void Start()
     {
         GameObject player;
         if (PhotonNetwork.IsMasterClient)
         {
-            player = InstantiatePlayer();
-            Player.MyPlayer = player.GetComponent<Player>();
-            Player.MyPlayer.RPC_ItsMyTurn(false);
+            player = InstantiatePlayer(true);
+            Player.My = player.GetComponent<Player>();
+            Player.My.RPC_ItsMyTurn(false);
         }
         else
         {
             player = InstantiatePlayer(false);
-            Player.MyPlayer = player.GetComponent<Player>();
+            Player.My = player.GetComponent<Player>();
         }
-        PutTheCamera(player);
+        PutCameraToPosition();
     }
-    private GameObject InstantiatePlayer(bool isFirst = true)
+    private GameObject InstantiatePlayer(bool isFirst)
     {
-        var playerPrefab = isFirst ? PlayerPrefab1 : PlayerPrefab2;
+        var playerPrefab = isFirst ? _playerPrefab1 : _playerPrefab2;
         return PhotonNetwork.Instantiate(playerPrefab.name, playerPrefab.transform.position, playerPrefab.transform.rotation);
     }
-    public void PutTheCamera(GameObject player)
+    private void PutCameraToPosition()
     {
-        var cameraPos = player.GetComponent<Player>().GetCameraPosition();
-        Camera.transform.position = cameraPos.position - player.transform.position;
-        Camera.transform.rotation = cameraPos.rotation;
-    }
-  
+        var cameraPos = Player.My.GetCameraPosition();
+        _camera.transform.position = cameraPos.position - Player.My.transform.position;
+        _camera.transform.rotation = cameraPos.rotation;
+    }  
     public void Leave()
     {
         PhotonNetwork.LeaveRoom();

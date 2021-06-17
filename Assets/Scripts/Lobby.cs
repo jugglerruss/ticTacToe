@@ -3,14 +3,13 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LobbyManager : MonoBehaviourPunCallbacks
+public class Lobby : MonoBehaviourPunCallbacks
 {
     public Text LogText;
     void Start()
     {
         PhotonNetwork.NickName = "Player " + Random.Range(1000, 9999);
         Log("Player's name is set to " + PhotonNetwork.NickName);
-
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.GameVersion = "1";
         PhotonNetwork.ConnectUsingSettings();
@@ -26,6 +25,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
     public void JoinRoom()
     {
+        Log("Find the room");
         PhotonNetwork.JoinRandomRoom();
     }
     public override void OnJoinedRoom()
@@ -39,6 +39,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinRandomFailed(short returnCode,string messages)
     {
+        Log("room not found");
         CreateRoom();
     }
     private IEnumerator WaitingForPlayers()
