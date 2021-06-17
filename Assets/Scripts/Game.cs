@@ -3,11 +3,10 @@ using UnityEngine.Events;
 
 public class Game : MonoBehaviour
 {
-
     [SerializeField]
-    private UnityEvent OnWin;
+    protected UnityEvent OnWin;
     [SerializeField]
-    private UnityEvent OnLose;
+    protected UnityEvent OnLose;
 
     private static Game instance;
     public static Game Instance
@@ -28,21 +27,18 @@ public class Game : MonoBehaviour
         }
     }
     #region Methods
-
-    protected virtual void Awake()
+    void Awake()
     {
         if (instance == null)
             DontDestroyOnLoad(gameObject);
         else
             Destroy(gameObject);
     }
-
-    #endregion
-    public bool CheckWin(Figure currentFigure)
+    public virtual bool CheckWin(Figure currentFigure)
     {
         if (Board.My.CheckLines() != 0)
         {
-            if (currentFigure.photonView.IsMine)
+            if (CheckOwner(currentFigure.transform))
             {
                 OnWin.AddListener(Player.My.Victory);
                 OnWin.Invoke();
@@ -57,4 +53,10 @@ public class Game : MonoBehaviour
         }
         return false;
     }
+
+    protected virtual bool CheckOwner(Transform figureTransform)
+    {
+        return figureTransform.parent == Player.My.transform;
+    }
+    #endregion
 }

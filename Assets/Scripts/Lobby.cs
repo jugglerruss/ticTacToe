@@ -1,6 +1,7 @@
 using System.Collections;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Lobby : MonoBehaviourPunCallbacks
@@ -13,6 +14,12 @@ public class Lobby : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.GameVersion = "1";
         PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public void StartSingle()
+    {
+        Log("StartSingle");
+        SceneManager.LoadScene(2);
     }
     public override void OnConnectedToMaster()
     {
@@ -32,7 +39,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     {
         Log("Joined the room");
         if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
-            PhotonNetwork.LoadLevel("Game");
+            PhotonNetwork.LoadLevel(1);
         else
             StartCoroutine(WaitingForPlayers());
 
@@ -46,7 +53,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     {
         Log("Waiting for players...");
         yield return new WaitUntil(() => PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers);
-        PhotonNetwork.LoadLevel("Game");
+        PhotonNetwork.LoadLevel(1);
     }
     private void Log(string message)
     {

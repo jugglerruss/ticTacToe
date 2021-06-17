@@ -29,7 +29,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 1, z: 1}
   m_Center: {x: 0, y: 0.48, z: 0}
---- !u!114 &936439604309960228
+--- !u!114 &1096808108464462003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -38,7 +38,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4849060408836466919}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f69294c21b786649afc7969a63283f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 882c2611ed97ca14784f729623e2f1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerId: 2

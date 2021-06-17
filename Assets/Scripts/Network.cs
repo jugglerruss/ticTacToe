@@ -18,7 +18,7 @@ public class Network : MonoBehaviourPunCallbacks
         {
             player = InstantiatePlayer(true);
             Player.My = player.GetComponent<Player>();
-            Player.My.RPC_ItsMyTurn(false);
+            (Player.My as PlayerOnline).RPC_ItsMyTurn(false);
         }
         else
         {
