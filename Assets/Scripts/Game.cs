@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,56 +8,42 @@ public class Game : MonoBehaviour
     protected UnityEvent OnWin;
     [SerializeField]
     protected UnityEvent OnLose;
+    [SerializeField]
+    protected UnityEvent OnDraw;
+    public bool isOver { get; protected set; }
+    private Board _board => FindObjectOfType<Board>();
+    protected Player[] _players = new Player[2];
 
-    private static Game instance;
-    public static Game Instance
+    public bool CheckWin(Figure currentFigure)
     {
-        get
+        if (_board.CheckLines() != 0)
         {
-            if (instance == null)
+            isOver = true;
+            if (currentFigure.CheckOwner(Player.My))
             {
-                instance = FindObjectOfType<Game>();
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject();
-                    obj.name = typeof(Game).Name;
-                    instance = obj.AddComponent<Game>();
-                }
-            }
-            return instance;
-        }
-    }
-    #region Methods
-    void Awake()
-    {
-        if (instance == null)
-            DontDestroyOnLoad(gameObject);
-        else
-            Destroy(gameObject);
-    }
-    public virtual bool CheckWin(Figure currentFigure)
-    {
-        if (Board.My.CheckLines() != 0)
-        {
-            if (CheckOwner(currentFigure.transform))
-            {
-                OnWin.AddListener(Player.My.Victory);
+                Player.My.Victory();
                 OnWin.Invoke();
-                OnWin.RemoveListener(Player.My.Victory);
+                AnimateBot(false);
             }
             else
             {
-                OnLose.AddListener(Player.My.Lose);
+                Player.My.Lose();
                 OnLose.Invoke();
-                OnWin.RemoveListener(Player.My.Lose);
+                AnimateBot(true);
+            }
+        }
+        else
+        {
+            if(_players[0].Figures.Where(f => !f.isPlaced).First() == null && 
+               _players[1].Figures.Where(f => !f.isPlaced).First() == null)
+            {
+                isOver = true;
+                Player.My.Draw();
+                OnDraw.Invoke();
             }
         }
         return false;
     }
+    protected virtual void AnimateBot(bool win){    }
 
-    protected virtual bool CheckOwner(Transform figureTransform)
-    {
-        return figureTransform.parent == Player.My.transform;
-    }
-    #endregion
 }

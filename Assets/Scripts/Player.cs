@@ -1,27 +1,39 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public abstract class Player : MonoBehaviour
 {
 
+    protected const float SCALE_FIGURE = 0.1f;
+    public const int COUNT_FIGURES = 6;
+
     [SerializeField]
     private Transform _cameraTransform;
     [SerializeField]
-    protected Transform _figurePrefab;
+    protected Transform _figurePrefab;    
 
     public bool IsMyTurn { get; protected set; }
     public Figure[] Figures { get; protected set; }
 
-    public static Player My;
+    public static Player My { get; protected set; }
     protected abstract void Start();
     public void Victory()
     {
-        My.IsMyTurn = false;
-        Figure.StartWinAnimation();
+        EndGame();
+        Figure.StartWinAnimation(this);
     }
     public void Lose()
     {
-        My.IsMyTurn = false;
-        Figure.StartLoseAnimation();
+        EndGame();
+        Figure.StartLoseAnimation(this);
+    }
+    public void Draw()
+    {
+        EndGame();
+    }
+    public void EndGame()
+    {
+        IsMyTurn = false;
     }
     public Transform GetCameraPosition() {
         return _cameraTransform;

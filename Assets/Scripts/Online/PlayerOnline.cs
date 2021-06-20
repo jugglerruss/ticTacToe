@@ -5,6 +5,18 @@ using UnityEngine;
 public class PlayerOnline : Player
 {
     private PhotonView _photonView => GetComponent<PhotonView>();
+
+    public static new PlayerOnline My
+    {
+        get
+        {
+            return Player.My as PlayerOnline;
+        }
+        set
+        {
+            Player.My = value;
+        }
+    }
     protected override void Start()
     {
         GameObject[] figuresGameObjects;
@@ -18,8 +30,8 @@ public class PlayerOnline : Player
     }
     protected override GameObject[] InstantiateFigures()
     {
-        GameObject[] figures = new GameObject[6];
-        for (var i = 0; i < 6; i++)
+        GameObject[] figures = new GameObject[COUNT_FIGURES];
+        for (var i = 0; i < COUNT_FIGURES; i++)
         {
             figures[i] = PhotonNetwork.Instantiate(_figurePrefab.name, transform.position, _figurePrefab.transform.rotation);
             _photonView.RPC(
@@ -32,24 +44,23 @@ public class PlayerOnline : Player
     [PunRPC]
     public void RPC_ChangePositionFigures(int figureViewID, int i)
     {
-        const float SCALE_KOEF = 0.1f;
         var figure = PhotonView.Find(figureViewID).transform;
         figure.SetParent(transform);
-        figure.localScale -= new Vector3(SCALE_KOEF, SCALE_KOEF, SCALE_KOEF) * i;
-        figure.localPosition = _figurePrefab.transform.localPosition + new Vector3(i * 1.4f - i * 4 * SCALE_KOEF, 0, 0);
-        figure.GetComponent<Figure>().Strength = 10 - i;
+        figure.localScale -= new Vector3(SCALE_FIGURE, SCALE_FIGURE, SCALE_FIGURE) * i;
+        figure.localPosition = _figurePrefab.transform.localPosition + new Vector3(i * 1.4f - i * 4 * SCALE_FIGURE, 0, 0);
+        figure.GetComponent<Figure>().Strength = COUNT_FIGURES - i;
     }
     [PunRPC]
     public void RPC_ItsMyTurn(bool deactivateOthers)
     {
-        (My as PlayerOnline).IsMyTurn = true;
+        My.IsMyTurn = true;
         if (deactivateOthers)
             _photonView.RPC("RPC_ItsNotMyTurn", RpcTarget.OthersBuffered, false);
     }
     [PunRPC]
     public void RPC_ItsNotMyTurn(bool activateOthers)
     {
-        (My as PlayerOnline).IsMyTurn = false;
+        My.IsMyTurn = false;
         if (activateOthers)
             _photonView.RPC("RPC_ItsMyTurn", RpcTarget.OthersBuffered,false);
     }

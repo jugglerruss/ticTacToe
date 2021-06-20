@@ -16,7 +16,7 @@ public class FigureOnline : Figure
         _photonView.RPC(
                    "RPC_UpdateFigure",
                    RpcTarget.All,
-                   !selected);
+                   !_selected);
     }
     public override void Deactivate()
     {
@@ -32,11 +32,11 @@ public class FigureOnline : Figure
     [PunRPC]
     private void RPC_UpdateFigure(bool selectedReceived)
     {
-        if (selectedReceived != selected && selectedReceived)
+        if (selectedReceived != _selected && selectedReceived)
         {
             BeginDrag();
             if (_photonView.IsMine)
-                Board.My.ShowAvaliblePositions(this);
+                _board.ShowAvaliblePositions(this);
         }
     }
     #endregion

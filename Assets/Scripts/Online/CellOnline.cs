@@ -12,10 +12,10 @@ public class CellOnline : Cell
         var activeFigure = PhotonView.Find(activeFigureId).GetComponent<Figure>();
         activeFigure.PlaceInPosition(transform.position);
         _currentFigure = activeFigure;
-        if (!Game.Instance.CheckWin(_currentFigure))
+        if (!_game.CheckWin(_currentFigure))
         {
             if ((_currentFigure as FigureOnline).PhotonView.IsMine)
-                (Player.My as PlayerOnline).RPC_ItsNotMyTurn(true);
+                PlayerOnline.My.RPC_ItsNotMyTurn(true);
         }        
     }
     protected override void MoveFigureOnPosition()

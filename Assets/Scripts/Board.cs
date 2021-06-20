@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Board : MonoBehaviour
@@ -12,10 +13,8 @@ public class Board : MonoBehaviour
     private Cell[,] cells = new Cell[4, 4];
     
     public static Cell[,] Cells;
-    public static Board My;
     private void Start()
     {
-        My = this;
         for (var i = 1; i <= 3; i++) {
             cells[1, i] = _cellsLine1[i-1];
             cells[2, i] = _cellsLine2[i-1];
@@ -28,6 +27,15 @@ public class Board : MonoBehaviour
         for (var i = 1; i <= 3; i++)
             for (var j = 1; j <= 3; j++)
                 Cells[i, j].DoSelect(activeFigure);
+    }
+    public List<Cell> GetAvaliblePositions(Figure activeFigure)
+    {
+        List<Cell> avalibleCells = new List<Cell>();
+        for (var i = 1; i <= 3; i++)
+            for (var j = 1; j <= 3; j++)
+                if (Cells[i, j].IsAvaliblePosition(activeFigure))
+                    avalibleCells.Add(Cells[i, j]);
+        return avalibleCells;
     }
     public void HideAllPositions()
     {

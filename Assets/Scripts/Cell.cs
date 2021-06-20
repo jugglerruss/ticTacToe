@@ -7,30 +7,38 @@ public abstract class Cell : MonoBehaviour
 {
     [SerializeField]
     protected Material _selectMaterial;
+    [SerializeField]
+    protected Material _defaultMaterial;
 
     protected Figure _currentFigure;
     protected MeshRenderer _meshRender => GetComponent<MeshRenderer>();
-    protected Material _defaultMaterial => _meshRender.material;
+    protected Game _game => FindObjectOfType<Game>();
     protected void OnMouseDown()
     {
-        if( Player.My.IsMyTurn && Figure.ActiveFigure != null)
-            if (Player.My.Figures.Contains(Figure.ActiveFigure))
+        TryMoveFigure(Player.My);
+    }
+    public void TryMoveFigure(Player player)
+    {
+        if (player.IsMyTurn && Figure.ActiveFigure != null)
+            if (player.Figures.Contains(Figure.ActiveFigure))
             {
-                if (_currentFigure != null)
-                    if (!CompareWithCurrentFigure(Figure.ActiveFigure))
+                if (!CompareWithCurrentFigure(Figure.ActiveFigure))
                         return;
                 MoveFigureOnPosition();
-            }        
+            }
     }
-
     public void DoSelect(Figure activeFigure)
     {
-        if (_currentFigure==null || activeFigure.Strength > _currentFigure.Strength)
-            _meshRender.sharedMaterial.color = new Color(1, 1, 0);
+        if (IsAvaliblePosition(activeFigure))
+            _meshRender.sharedMaterial = _selectMaterial;
+    }
+    public bool IsAvaliblePosition(Figure activeFigure)
+    {
+        return _currentFigure == null || (activeFigure.Strength > _currentFigure.Strength && activeFigure.PlayerId != _currentFigure.PlayerId);           
     }
     public void DeSelect()
     {
-        _meshRender.sharedMaterial.color = new Color(1, 1, 1);
+        _meshRender.sharedMaterial = _defaultMaterial;
     }
     public int GetPlayerId()
     {
@@ -39,9 +47,9 @@ public abstract class Cell : MonoBehaviour
     }
     protected bool CompareWithCurrentFigure(Figure activeFigure)
     {
-        if (activeFigure.Strength > _currentFigure.Strength)
+        if (IsAvaliblePosition(activeFigure))
         {
-            _currentFigure.Deactivate();
+            _currentFigure?.Deactivate();
             return true;
         }
         Debug.LogError("Текущая фигура меньше размещённой");

@@ -3,7 +3,7 @@ public class FigureSingle : Figure
     protected override void MoveUp()
     {
         BeginDrag();
-        Board.My.ShowAvaliblePositions(this);
+        _board.ShowAvaliblePositions(this);
     }
     public override void Deactivate()
     {

@@ -6,10 +6,11 @@ using UnityEngine;
 public abstract class Figure : MonoBehaviour
 {
     #region Private Properties
-    protected bool selected;
-    protected bool placed;
-    private Rigidbody RB => GetComponent<Rigidbody>();
-    private Animator animator => GetComponent<Animator>();
+    protected bool _selected;
+    protected bool _placed;
+    private Rigidbody _RB => GetComponent<Rigidbody>();
+    private Animator _animator => GetComponent<Animator>();
+    protected Board _board => FindObjectOfType<Board>();
     #endregion
 
     #region Inpector Variables
@@ -20,6 +21,13 @@ public abstract class Figure : MonoBehaviour
     #region Public Properties
     public static Figure ActiveFigure;
     public int Strength { get; set; }
+    public bool isPlaced
+    {
+        get
+        {
+            return _placed;
+        }
+    }
     #endregion
 
     #region Unity Functions
@@ -33,23 +41,31 @@ public abstract class Figure : MonoBehaviour
     #region protected methods
     protected bool CanTake()
     {
-        return Player.My.Figures.Contains(this) && Player.My.IsMyTurn && !selected && !placed;
+        return Player.My.Figures.Contains(this) && Player.My.IsMyTurn && !_selected && !_placed;
     }
-    protected void BeginDrag()
+    public void BeginDrag()
     {
         foreach (Figure figure in Player.My.Figures)
             if (figure != this)
-                figure.EndDrag();
-        selected = true;
+                figure.Drop();
+        _selected = true;
         ActiveFigure = this;
         transform.position += new Vector3(0, 1);
-        RB.isKinematic = true;
+        _RB.isKinematic = true;
+    }
+    protected void Drop()
+    {
+        _selected = false;
+        _RB.isKinematic = false;
     }
     protected void EndDrag()
     {
-        selected = false;
-        RB.isKinematic = false;
-        Board.My.HideAllPositions();
+        Drop();
+        _board.HideAllPositions();
+    }
+    public bool CheckOwner(Player player)
+    {
+        return transform.parent == player.transform;
     }
     protected abstract void MoveUp();
 
@@ -59,7 +75,7 @@ public abstract class Figure : MonoBehaviour
     public void PlaceInPosition(Vector3 cellPosition)
     {
         transform.position = cellPosition + new Vector3(0, 2);
-        placed = true;
+        _placed = true;
         ActiveFigure = null;
         EndDrag();
     }
@@ -67,15 +83,15 @@ public abstract class Figure : MonoBehaviour
     #endregion
 
     #region Animation
-    public static void StartWinAnimation()
+    public static void StartWinAnimation(Player player)
     {
-        foreach (Figure figure in Player.My.Figures)
-            figure.animator.SetBool("isWin", true);
+        foreach (Figure figure in player.Figures)
+            figure._animator.SetBool("isWin", true);
     }
-    public static void StartLoseAnimation()
+    public static void StartLoseAnimation(Player player)
     {
-        foreach (Figure figure in Player.My.Figures)
-            figure.animator.SetBool("isLose", true);
+        foreach (Figure figure in player.Figures)
+            figure._animator.SetBool("isLose", true);
     }
     #endregion
 
