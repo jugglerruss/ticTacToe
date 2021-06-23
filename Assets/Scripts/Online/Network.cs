@@ -4,28 +4,26 @@ using UnityEngine.SceneManagement;
 
 public class Network : MonoBehaviourPunCallbacks
 {
-    [SerializeField]
-    private Camera _camera;
-    [SerializeField]
-    private GameObject _playerPrefab1;
-    [SerializeField]
-    private GameObject _playerPrefab2;
+    [SerializeField] private GameOnline game;
+    [SerializeField] private Camera _camera;
+    [SerializeField] private GameObject _playerPrefab1;
+    [SerializeField] private GameObject _playerPrefab2;
 
     void Awake()
     {
-        Debug.Log(PhotonNetwork.IsMasterClient);
         GameObject player;
         if (PhotonNetwork.IsMasterClient)
         {
             player = InstantiatePlayer(true);
             PlayerOnline.My = player.GetComponent<PlayerOnline>();
-            PlayerOnline.My.RPC_ItsMyTurn(false);
+            PlayerOnline.My.MyTurn(true);
         }
         else
         {
             player = InstantiatePlayer(false);
             PlayerOnline.My = player.GetComponent<PlayerOnline>();
         }
+        game.SetPlayer(PlayerOnline.My);
         PutCameraToPosition();
     }
     private GameObject InstantiatePlayer(bool isFirst)

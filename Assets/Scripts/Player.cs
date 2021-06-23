@@ -3,37 +3,37 @@ using System.Collections.Generic;
 
 public abstract class Player : MonoBehaviour
 {
-
+    public delegate void NoFigures();
     protected const float SCALE_FIGURE = 0.1f;
     public const int COUNT_FIGURES = 6;
 
-    [SerializeField]
-    private Transform _cameraTransform;
-    [SerializeField]
-    protected Transform _figurePrefab;    
+    [SerializeField] private Transform _cameraTransform;
+    [SerializeField] protected Transform _figurePrefab;    
+    [SerializeField] protected int _id;    
 
+    public int Id  => _id; 
     public bool IsMyTurn { get; protected set; }
     public Figure[] Figures { get; protected set; }
 
     public static Player My { get; protected set; }
-    protected abstract void Start();
+    protected abstract void Awake();
     public void Victory()
     {
-        EndGame();
+        MyTurn(false);
         Figure.StartWinAnimation(this);
     }
     public void Lose()
     {
-        EndGame();
+        MyTurn(false);
         Figure.StartLoseAnimation(this);
     }
     public void Draw()
     {
-        EndGame();
+        MyTurn(false);
     }
-    public void EndGame()
+    public void MyTurn(bool my)
     {
-        IsMyTurn = false;
+        IsMyTurn = my;
     }
     public Transform GetCameraPosition() {
         return _cameraTransform;

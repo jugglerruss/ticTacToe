@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +12,7 @@ public class GameSingle : Game
         player = InstantiatePlayer(true);
         PlayerSingle.My = player.GetComponent<PlayerSingle>();
         PlayerSingle.My.ItsMyTurn(false);
+        PlayerSingle.My.NoFiguresDraw += Player_NoFiguresDraw;
         _players[0] = PlayerSingle.My;
 
         player = InstantiatePlayer(false);

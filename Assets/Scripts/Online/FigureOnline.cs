@@ -38,6 +38,10 @@ public class FigureOnline : Figure
             if (_photonView.IsMine)
                 _board.ShowAvaliblePositions(this);
         }
+        else
+        {
+            Drop();
+        }
     }
     #endregion
 }

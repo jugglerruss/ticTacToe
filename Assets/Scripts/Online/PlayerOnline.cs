@@ -1,11 +1,19 @@
 using Photon.Pun;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(PhotonView))]
 public class PlayerOnline : Player
 {
+    public event NoFigures NoFiguresDraw;
     private PhotonView _photonView => GetComponent<PhotonView>();
-
+    public PhotonView PhotonView
+    {
+        get
+        {
+            return _photonView;
+        }
+    }
     public static new PlayerOnline My
     {
         get
@@ -17,7 +25,7 @@ public class PlayerOnline : Player
             Player.My = value;
         }
     }
-    protected override void Start()
+    protected override void Awake()
     {
         GameObject[] figuresGameObjects;
         if (_photonView.IsMine)
@@ -53,7 +61,10 @@ public class PlayerOnline : Player
     [PunRPC]
     public void RPC_ItsMyTurn(bool deactivateOthers)
     {
-        My.IsMyTurn = true;
+        if (My.Figures.Where(f => !f.isPlaced).Count() > 0)
+            My.IsMyTurn = true;
+        else
+            _photonView.RPC("RPC_DrawAll", RpcTarget.All);
         if (deactivateOthers)
             _photonView.RPC("RPC_ItsNotMyTurn", RpcTarget.OthersBuffered, false);
     }
@@ -63,6 +74,11 @@ public class PlayerOnline : Player
         My.IsMyTurn = false;
         if (activateOthers)
             _photonView.RPC("RPC_ItsMyTurn", RpcTarget.OthersBuffered,false);
+    }
+    [PunRPC]
+    public void RPC_DrawAll()
+    {
+        My.NoFiguresDraw?.Invoke();
     }
     #endregion
 }

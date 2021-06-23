@@ -99,3 +99,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraTransform: {fileID: 4721305623531359445}
   _figurePrefab: {fileID: 4853880389671008823, guid: b8850cb501c27f6408df1b24ee5a8ed8, type: 3}
+  _id: 2

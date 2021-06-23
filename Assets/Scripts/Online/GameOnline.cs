@@ -1,10 +1,19 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
+using Photon.Pun;
 
+[RequireComponent(typeof(PhotonView))]
 public class GameOnline : Game
 {
-    private void Start()
+    private PhotonView _photonView => GetComponent<PhotonView>();
+    public void SetPlayer(PlayerOnline player)
     {
-        _players = FindObjectsOfType<Player>();
+        player.NoFiguresDraw += Player_NoFiguresDraw;
+    }
+
+    [PunRPC]
+    private void RPC_Draw()
+    {
+       
     }
 }

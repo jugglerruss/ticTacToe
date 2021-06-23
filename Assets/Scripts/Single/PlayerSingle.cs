@@ -1,7 +1,9 @@
+using System.Linq;
 using UnityEngine;
 
 public class PlayerSingle : Player
 {
+    public event NoFigures NoFiguresDraw;
     public static PlayerSingle II;
     public static new PlayerSingle My {
         get 
@@ -13,7 +15,7 @@ public class PlayerSingle : Player
             Player.My = value;
         }
     }
-    protected override void Start()
+    protected override void Awake()
     {
         GameObject[] figuresGameObjects;
         figuresGameObjects = InstantiateFigures();
@@ -35,7 +37,10 @@ public class PlayerSingle : Player
     }
     public void ItsMyTurn(bool deactivateOthers)
     {
-        IsMyTurn = true;
+        if (Figures.Where(f => !f.isPlaced).Count() > 0)
+            IsMyTurn = true;
+        else
+            NoFiguresDraw?.Invoke();
         if (deactivateOthers)
             if (this == II)
                 My.IsMyTurn = false;

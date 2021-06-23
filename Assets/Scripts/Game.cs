@@ -34,15 +34,14 @@ public class Game : MonoBehaviour
         }
         else
         {
-            if(_players[0].Figures.Where(f => !f.isPlaced).First() == null && 
-               _players[1].Figures.Where(f => !f.isPlaced).First() == null)
-            {
-                isOver = true;
-                Player.My.Draw();
-                OnDraw.Invoke();
-            }
+
         }
         return false;
+    }
+
+    protected void Player_NoFiguresDraw()
+    {
+        OnDraw.Invoke();
     }
     protected virtual void AnimateBot(bool win){    }
 

@@ -185,28 +185,16 @@ MonoBehaviour:
   OnDraw:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223974226}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1101558466}
+        m_TargetAssemblyTypeName: UI, Assembly-CSharp
+        m_MethodName: MessageDraw
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 223974227}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
-        m_MethodName: set_text
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: "\u041D\u0438\u0447\u044C\u044F"
           m_BoolArgument: 1
         m_CallState: 2
   _playerPrefab1: {fileID: 97028774049710207, guid: d16a616ca9802e044956103d7843db53, type: 3}

@@ -69,6 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraTransform: {fileID: 7596628398941864029}
   _figurePrefab: {fileID: 5416651436062855279, guid: 338a1f84b88faeb46b43ce778b675770, type: 3}
+  _id: 1
 --- !u!1 &7287931003923433876
 GameObject:
   m_ObjectHideFlags: 0
