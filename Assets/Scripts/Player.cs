@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 public abstract class Player : MonoBehaviour
 {
-    public delegate void NoFigures();
     protected const float SCALE_FIGURE = 0.1f;
     public const int COUNT_FIGURES = 6;
 
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] protected Transform _figurePrefab;    
-    [SerializeField] protected int _id;    
+    [SerializeField] protected int _id;
+
+    protected Game game => FindObjectOfType<Game>();
 
     public int Id  => _id; 
     public bool IsMyTurn { get; protected set; }
@@ -31,9 +32,9 @@ public abstract class Player : MonoBehaviour
     {
         MyTurn(false);
     }
-    public void MyTurn(bool my)
+    public void MyTurn(bool isMy)
     {
-        IsMyTurn = my;
+        IsMyTurn = isMy;
     }
     public Transform GetCameraPosition() {
         return _cameraTransform;

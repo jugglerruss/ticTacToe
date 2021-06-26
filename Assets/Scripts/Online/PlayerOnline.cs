@@ -1,11 +1,12 @@
 using Photon.Pun;
+using System;
 using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(PhotonView))]
 public class PlayerOnline : Player
 {
-    public event NoFigures NoFiguresDraw;
+    public event Action NoFiguresDraw;
     private PhotonView _photonView => GetComponent<PhotonView>();
     public PhotonView PhotonView
     {
@@ -27,6 +28,7 @@ public class PlayerOnline : Player
     }
     protected override void Awake()
     {
+        (game as GameOnline).SetPlayer(this);
         GameObject[] figuresGameObjects;
         if (_photonView.IsMine)
         {

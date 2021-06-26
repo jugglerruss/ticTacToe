@@ -50,6 +50,7 @@ MonoBehaviour:
   - RPC_SetPlayer
   - RPC_Draw
   - RPC_DrawAll
+  - RPC_SetEnemyNickName
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

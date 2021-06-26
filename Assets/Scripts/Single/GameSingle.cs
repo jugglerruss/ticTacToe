@@ -13,12 +13,12 @@ public class GameSingle : Game
         PlayerSingle.My = player.GetComponent<PlayerSingle>();
         PlayerSingle.My.ItsMyTurn(false);
         PlayerSingle.My.NoFiguresDraw += Player_NoFiguresDraw;
-        _players[0] = PlayerSingle.My;
+        _ui.SetMyNickName(PlayerPrefs.GetString("NickName", "Player"));
 
         player = InstantiatePlayer(false);
         player.AddComponent<Bot>();
-        PlayerSingle.II = player.GetComponent<PlayerSingle>();
-        _players[1] = PlayerSingle.II;
+        PlayerSingle.Bot = player.GetComponent<PlayerSingle>();
+        _ui.SetBotName(PlayerPrefs.GetString("DifficultyName", ""));
     }
     public void LeftRoom()
     {
@@ -36,8 +36,8 @@ public class GameSingle : Game
     protected override void AnimateBot(bool win)
     {
         if(win)
-            _players[1].Victory();
+            PlayerSingle.Bot.Victory();
         else
-            _players[1].Lose();
+            PlayerSingle.Bot.Lose();
     }
 }

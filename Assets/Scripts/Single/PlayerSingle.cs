@@ -1,10 +1,11 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
 public class PlayerSingle : Player
 {
-    public event NoFigures NoFiguresDraw;
-    public static PlayerSingle II;
+    public event Action NoFiguresDraw;
+    public static PlayerSingle Bot;
     public static new PlayerSingle My {
         get 
         {
@@ -42,18 +43,18 @@ public class PlayerSingle : Player
         else
             NoFiguresDraw?.Invoke();
         if (deactivateOthers)
-            if (this == II)
+            if (this == Bot)
                 My.IsMyTurn = false;
             else
-                II.IsMyTurn = false;
+                Bot.IsMyTurn = false;
     }
     public void ItsNotMyTurn(bool activateOthers)
     {
         IsMyTurn = false;
         if (activateOthers)
-            if (this == II)
+            if (this == Bot)
                 My.IsMyTurn = true;
             else
-                II.IsMyTurn = true;
+                Bot.IsMyTurn = true;
     }
 }

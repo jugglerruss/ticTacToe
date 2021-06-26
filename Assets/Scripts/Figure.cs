@@ -45,14 +45,20 @@ public abstract class Figure : MonoBehaviour
     }
     public void BeginDrag()
     {
-        foreach (Figure figure in Player.My.Figures)
-            if (figure != this)
-                figure.Drop();
+        DropAll();
         _selected = true;
         ActiveFigure = this;
         transform.position += new Vector3(0, 1);
         _RB.isKinematic = true;
     }
+
+    private void DropAll()
+    {
+        foreach (Figure figure in FindObjectsOfType<Figure>())
+            if (figure != this)
+                figure.Drop();
+    }
+
     protected void Drop()
     {
         _selected = false;

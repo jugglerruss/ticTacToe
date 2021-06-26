@@ -9,7 +9,7 @@ public class CellSingle : Cell
         if (!_game.CheckWin(_currentFigure))
         {
             if (_currentFigure.CheckOwner(PlayerSingle.My))
-                PlayerSingle.II.ItsMyTurn(true);
+                PlayerSingle.Bot.ItsMyTurn(true);
             else
                 PlayerSingle.My.ItsMyTurn(true);
         }
