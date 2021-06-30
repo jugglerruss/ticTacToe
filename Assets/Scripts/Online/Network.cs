@@ -63,7 +63,6 @@ public class Network : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.SetMasterClient(PhotonNetwork.MasterClient.GetNext());
-        Debug.LogError(PhotonNetwork.IsMasterClient);
         PhotonNetwork.LoadLevel(1);
     }
 }

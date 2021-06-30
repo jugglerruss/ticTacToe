@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public class Lobby : MonoBehaviourPunCallbacks
 {
+    [SerializeField] private Text _scoreOnlineWin;
+    [SerializeField] private Text _scoreOnlineLose;
+    [SerializeField] private Text _scoreOnlineDraw;
+    [SerializeField] private Text _scoreSingleWin;
+    [SerializeField] private Text _scoreSingleLose;
+    [SerializeField] private Text _scoreSingleDraw;
     [SerializeField] private Text _logText;
     [SerializeField] private InputField _nickInput;
     [SerializeField] private Dropdown _singleDifficulty;
@@ -19,12 +25,23 @@ public class Lobby : MonoBehaviourPunCallbacks
     {
         string nickName = PlayerPrefs.GetString("NickName", "Player " + Random.Range(1000, 9999));
         _nickInput.text = nickName;
-        _singleDifficulty.value = PlayerPrefs.GetInt("DifficultyValue", 1);
         SetNickName();
+        _singleDifficulty.value = PlayerPrefs.GetInt("DifficultyValue", 1);
         SetDifficulty();
+        SetScoreInfo();
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.GameVersion = "1";
         PhotonNetwork.ConnectUsingSettings();
+    }
+    private void SetScoreInfo()
+    {
+        _scoreOnlineWin.text = PlayerPrefs.GetInt("scoreOnlineWin", 0).ToString();
+        _scoreOnlineLose.text = PlayerPrefs.GetInt("scoreOnlineLose", 0).ToString();
+        _scoreOnlineDraw.text = PlayerPrefs.GetInt("scoreOnlineDraw", 0).ToString();
+
+        _scoreSingleWin.text = PlayerPrefs.GetInt("scoreSingleWin", 0).ToString();
+        _scoreSingleLose.text = PlayerPrefs.GetInt("scoreSingleLose", 0).ToString();
+        _scoreSingleDraw.text = PlayerPrefs.GetInt("scoreSingleDraw", 0).ToString(); 
     }
     private void SetDifficulty()
     {

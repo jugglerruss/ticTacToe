@@ -18,17 +18,17 @@ public abstract class Player : MonoBehaviour
 
     public static Player My { get; protected set; }
     protected abstract void Awake();
-    public void Victory()
+    public virtual void Victory()
     {
         MyTurn(false);
         Figure.StartWinAnimation(this);
     }
-    public void Lose()
+    public virtual void Lose()
     {
         MyTurn(false);
         Figure.StartLoseAnimation(this);
     }
-    public void Draw()
+    public virtual void Draw()
     {
         MyTurn(false);
     }

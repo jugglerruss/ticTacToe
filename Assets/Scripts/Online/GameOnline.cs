@@ -9,6 +9,11 @@ public class GameOnline : Game
 {
     private PhotonView _photonView => GetComponent<PhotonView>();
     public List<Player> Players => _players.OrderBy(p => (p as PlayerOnline).PhotonView.Owner.ActorNumber).ToList();
+    private void Start()
+    {
+        GameType = "Online";
+        _ui.SetScoreInfo(GameType);
+    }
     public void SetPlayer(PlayerOnline player)
     {
         _ui.SetMyNickName(PhotonNetwork.NickName);
@@ -21,4 +26,5 @@ public class GameOnline : Game
     {
         _ui.SetEnemyNickName(name);
     }
+
 }

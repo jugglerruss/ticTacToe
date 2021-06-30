@@ -8,6 +8,8 @@ public class GameSingle : Game
     [SerializeField] private Transform _playerPrefab2;
     private void Start()
     {
+        GameType = "Single";
+
         GameObject player;
         player = InstantiatePlayer(true);
         PlayerSingle.My = player.GetComponent<PlayerSingle>();
@@ -19,6 +21,8 @@ public class GameSingle : Game
         player.AddComponent<Bot>();
         PlayerSingle.Bot = player.GetComponent<PlayerSingle>();
         _ui.SetBotName(PlayerPrefs.GetString("DifficultyName", ""));
+
+        _ui.SetScoreInfo(GameType);
     }
     public void LeftRoom()
     {
@@ -40,4 +44,5 @@ public class GameSingle : Game
         else
             PlayerSingle.Bot.Lose();
     }
+
 }

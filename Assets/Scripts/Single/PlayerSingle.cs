@@ -38,10 +38,11 @@ public class PlayerSingle : Player
     }
     public void ItsMyTurn(bool deactivateOthers)
     {
-        if (Figures.Where(f => !f.isPlaced).Count() > 0)
-            IsMyTurn = true;
-        else
-            NoFiguresDraw?.Invoke();
+        if(!game.isOver)
+            if (Figures.Where(f => !f.isPlaced).Count() > 0)
+                IsMyTurn = true;
+            else
+                NoFiguresDraw?.Invoke();
         if (deactivateOthers)
             if (this == Bot)
                 My.IsMyTurn = false;
