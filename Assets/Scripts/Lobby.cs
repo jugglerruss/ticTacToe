@@ -67,18 +67,17 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public void CreateRoom( )
     {
-        SetNickName();
         PhotonNetwork.CreateRoom(null, new Photon.Realtime.RoomOptions { MaxPlayers = 2, CleanupCacheOnLeave = true });
     }
     public void JoinRoom()
     {
         Log("Find the room");
-        SetNickName();
         PhotonNetwork.JoinRandomRoom();
     }
     public override void OnJoinedRoom()
     {
-        Log("Joined the room");
+        Log("Join the room");
+        SetNickName();
         if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
             PhotonNetwork.LoadLevel(1);
         else

@@ -38,24 +38,24 @@ public class PlayerSingle : Player
     }
     public void ItsMyTurn(bool deactivateOthers)
     {
-        if(!game.isOver)
+        if (!game.isOver)
             if (Figures.Where(f => !f.isPlaced).Count() > 0)
-                IsMyTurn = true;
+                MyTurn(true);
             else
                 NoFiguresDraw?.Invoke();
         if (deactivateOthers)
             if (this == Bot)
-                My.IsMyTurn = false;
+                My.MyTurn(false);
             else
-                Bot.IsMyTurn = false;
+                Bot.MyTurn(false);
     }
     public void ItsNotMyTurn(bool activateOthers)
     {
-        IsMyTurn = false;
+        MyTurn(false);
         if (activateOthers)
             if (this == Bot)
-                My.IsMyTurn = true;
+                My.MyTurn(true);
             else
-                Bot.IsMyTurn = true;
+                Bot.MyTurn(true);
     }
 }

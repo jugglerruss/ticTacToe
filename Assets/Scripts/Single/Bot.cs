@@ -19,7 +19,7 @@ public class Bot : MonoBehaviour
             yield return new WaitForSeconds(1);
             var figure = GetRandomFigure();
             var position = GetRandomPosition(figure);
-            figure.BeginDrag();
+            figure.Select();
             yield return new WaitForSeconds(1);
             position.TryMoveFigure(PlayerSingle.Bot);
             PlayerSingle.Bot.ItsNotMyTurn(true);

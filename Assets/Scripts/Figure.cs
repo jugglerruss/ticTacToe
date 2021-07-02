@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator),typeof(Rigidbody))]
 public abstract class Figure : MonoBehaviour
@@ -11,6 +12,7 @@ public abstract class Figure : MonoBehaviour
     private Rigidbody _RB => GetComponent<Rigidbody>();
     private Animator _animator => GetComponent<Animator>();
     protected Board _board => FindObjectOfType<Board>();
+    private bool _invincinle;
     #endregion
 
     #region Inpector Variables
@@ -31,6 +33,11 @@ public abstract class Figure : MonoBehaviour
     #endregion
 
     #region Unity Functions
+    private void Start()
+    {
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+            StartLobbyAnimation();
+    }
     protected void OnMouseDown()
     {
         if (CanTake())
@@ -43,13 +50,14 @@ public abstract class Figure : MonoBehaviour
     {
         return Player.My.Figures.Contains(this) && Player.My.IsMyTurn && !_selected && !_placed;
     }
-    public void BeginDrag()
+    public void Select()
     {
         DropAll();
         _selected = true;
         ActiveFigure = this;
-        transform.position += new Vector3(0, 1);
+        //transform.position += new Vector3(0, 1);
         _RB.isKinematic = true;
+        SelectAnimation(_selected);
     }
 
     private void DropAll()
@@ -63,8 +71,9 @@ public abstract class Figure : MonoBehaviour
     {
         _selected = false;
         _RB.isKinematic = false;
+        SelectAnimation(_selected);
     }
-    protected void EndDrag()
+    protected void Deselect()
     {
         Drop();
         _board.HideAllPositions();
@@ -80,24 +89,54 @@ public abstract class Figure : MonoBehaviour
     #region Public methods
     public void PlaceInPosition(Vector3 cellPosition)
     {
-        transform.position = cellPosition + new Vector3(0, 2);
+        transform.position = cellPosition + new Vector3(0, 1);
         _placed = true;
+        PlaceAnimation(_placed);
         ActiveFigure = null;
-        EndDrag();
+        Deselect();
     }
     public abstract void Deactivate();
     #endregion
 
     #region Animation
-    public static void StartWinAnimation(Player player)
+    public void StartMyTurnAnimation(bool isMy)
     {
-        foreach (Figure figure in player.Figures)
-            figure._animator.SetBool("isWin", true);
+        _animator.SetBool("isMyTurn", isMy);
     }
-    public static void StartLoseAnimation(Player player)
+    public void SelectAnimation(bool select)
     {
-        foreach (Figure figure in player.Figures)
-            figure._animator.SetBool("isLose", true);
+        _animator.SetBool("isSelect", select);
+    }
+    public void PlaceAnimation(bool isPlaced)
+    {
+        _animator.SetBool("isPlaced", isPlaced);
+    }
+    public void StartWinAnimation()
+    {
+        _animator.SetTrigger("isWin");
+    }
+    public void StartLoseAnimation()
+    {
+        _animator.SetTrigger("isLose");
+    }
+    public void StartLobbyAnimation()
+    {
+        _animator.SetBool("inLobby",true);
+        if (PlayerId==1)
+            _animator.SetTrigger("Attack");
+    }
+    public void GetHit()
+    {
+        if(!_invincinle)
+            _animator.SetTrigger("GetHit");
+    }
+    public void Invincible()
+    {
+        _invincinle = true;
+    }
+    public void DeInvincible()
+    {
+        _invincinle = false;
     }
     #endregion
 

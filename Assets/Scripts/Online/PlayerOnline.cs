@@ -64,7 +64,7 @@ public class PlayerOnline : Player
     public void RPC_ItsMyTurn(bool deactivateOthers)
     {
         if (My.Figures.Where(f => !f.isPlaced).Count() > 0)
-            My.IsMyTurn = true;
+            My.MyTurn(true);
         else
             _photonView.RPC("RPC_DrawAll", RpcTarget.All);
         if (deactivateOthers)
@@ -73,7 +73,7 @@ public class PlayerOnline : Player
     [PunRPC]
     public void RPC_ItsNotMyTurn(bool activateOthers)
     {
-        My.IsMyTurn = false;
+        My.MyTurn(false);
         if (activateOthers)
             _photonView.RPC("RPC_ItsMyTurn", RpcTarget.OthersBuffered,false);
     }

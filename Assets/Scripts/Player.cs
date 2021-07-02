@@ -21,12 +21,14 @@ public abstract class Player : MonoBehaviour
     public virtual void Victory()
     {
         MyTurn(false);
-        Figure.StartWinAnimation(this);
+        foreach (Figure figure in Figures)
+            figure.StartWinAnimation();
     }
     public virtual void Lose()
     {
         MyTurn(false);
-        Figure.StartLoseAnimation(this);
+        foreach (Figure figure in Figures)
+            figure.StartLoseAnimation();
     }
     public virtual void Draw()
     {
@@ -35,6 +37,8 @@ public abstract class Player : MonoBehaviour
     public void MyTurn(bool isMy)
     {
         IsMyTurn = isMy;
+        foreach (Figure figure in Figures)
+            figure.StartMyTurnAnimation(isMy);
     }
     public Transform GetCameraPosition() {
         return _cameraTransform;

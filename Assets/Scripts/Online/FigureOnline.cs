@@ -34,7 +34,7 @@ public class FigureOnline : Figure
     {
         if (selectedReceived != _selected && selectedReceived)
         {
-            BeginDrag();
+            Select();
             if (_photonView.IsMine)
                 _board.ShowAvaliblePositions(this);
         }
