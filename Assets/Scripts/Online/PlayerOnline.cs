@@ -43,7 +43,7 @@ public class PlayerOnline : Player
         GameObject[] figures = new GameObject[COUNT_FIGURES];
         for (var i = 0; i < COUNT_FIGURES; i++)
         {
-            figures[i] = PhotonNetwork.Instantiate(_figurePrefab.name, transform.position, _figurePrefab.transform.rotation);
+            figures[i] = PhotonNetwork.Instantiate(_figurePrefab.name, transform.localPosition + new Vector3(i * 1.1f, 0, 0), _figurePrefab.transform.rotation);
             _photonView.RPC(
                   "RPC_ChangePositionFigures",
                   RpcTarget.All, figures[i].GetComponent<PhotonView>().ViewID, i);
@@ -56,9 +56,7 @@ public class PlayerOnline : Player
     {
         var figure = PhotonView.Find(figureViewID).transform;
         figure.SetParent(transform);
-        figure.localScale -= new Vector3(SCALE_FIGURE, SCALE_FIGURE, SCALE_FIGURE) * i;
-        figure.localPosition = _figurePrefab.transform.localPosition + new Vector3(i * 1.4f - i * 4 * SCALE_FIGURE, 0, 0);
-        figure.GetComponent<Figure>().Strength = COUNT_FIGURES - i;
+        figure.GetComponent<Figure>().SetStrength(COUNT_FIGURES - i);
     }
     [PunRPC]
     public void RPC_ItsMyTurn(bool deactivateOthers)

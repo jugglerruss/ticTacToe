@@ -29,10 +29,11 @@ public class PlayerSingle : Player
         GameObject[] figures = new GameObject[COUNT_FIGURES];
         for (var i = 0; i < COUNT_FIGURES; i++)
         {
-            figures[i] = Instantiate(_figurePrefab, transform.position, _figurePrefab.transform.rotation,transform).gameObject;
-            figures[i].transform.localScale -= new Vector3(SCALE_FIGURE, SCALE_FIGURE, SCALE_FIGURE) * i;
-            figures[i].transform.localPosition = _figurePrefab.transform.localPosition + new Vector3(i * 1.4f - i * 4 * SCALE_FIGURE, 0, 0);
-            figures[i].GetComponent<Figure>().Strength = COUNT_FIGURES - i;
+            var start = 0f;
+            if (i==1)
+                start = 0.1f;
+            figures[i] = Instantiate(_figurePrefab, transform.localPosition + new Vector3(i + start, 0, 0), _figurePrefab.transform.rotation,transform).gameObject;
+            figures[i].GetComponent<Figure>().SetStrength(COUNT_FIGURES - i);
         }
         return figures;
     }

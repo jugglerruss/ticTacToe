@@ -33,10 +33,6 @@ public abstract class Game : MonoBehaviour
                 AnimateBot(true);
             }
         }
-        else
-        {
-
-        }
         return false;
     }
 

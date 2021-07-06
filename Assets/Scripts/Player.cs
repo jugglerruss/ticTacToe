@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public abstract class Player : MonoBehaviour
 {
-    protected const float SCALE_FIGURE = 0.1f;
     public const int COUNT_FIGURES = 6;
 
     [SerializeField] private Transform _cameraTransform;

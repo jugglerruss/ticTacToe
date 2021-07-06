@@ -5,10 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 public abstract class Cell : MonoBehaviour
 {
-    [SerializeField]
-    protected Material _selectMaterial;
-    [SerializeField]
-    protected Material _defaultMaterial;
+    [SerializeField] protected Material _selectMaterial;
+    [SerializeField] protected Material _defaultMaterial;
 
     protected Figure _currentFigure;
     protected MeshRenderer _meshRender => GetComponent<MeshRenderer>();
@@ -17,15 +15,18 @@ public abstract class Cell : MonoBehaviour
     {
         TryMoveFigure(Player.My);
     }
-    public void TryMoveFigure(Player player)
+    public bool TryMoveFigure(Player player)
     {
-        if (player.IsMyTurn && Figure.ActiveFigure != null)
-            if (player.Figures.Contains(Figure.ActiveFigure))
-            {
-                if (!CompareWithCurrentFigure(Figure.ActiveFigure))
-                        return;
+        if (player.IsMyTurn && Figure.ActiveFigure != null && IsAvaliblePosition(Figure.ActiveFigure))
+        {
+            if (_currentFigure == null)
                 MoveFigureOnPosition();
-            }
+            else
+                CompareWithCurrentFigure();
+                 
+            return true;
+        }
+        return false;
     }
     public void DoSelect(Figure activeFigure)
     {
@@ -34,7 +35,7 @@ public abstract class Cell : MonoBehaviour
     }
     public bool IsAvaliblePosition(Figure activeFigure)
     {
-        return _currentFigure == null || (activeFigure.Strength > _currentFigure.Strength && activeFigure.PlayerId != _currentFigure.PlayerId);           
+        return _currentFigure == null || activeFigure.Strength >= _currentFigure.Strength || activeFigure.PlayerId == _currentFigure.PlayerId;           
     }
     public void DeSelect()
     {
@@ -45,15 +46,22 @@ public abstract class Cell : MonoBehaviour
         if(_currentFigure!=null) return _currentFigure.PlayerId;
         return 0;
     }
-    protected bool CompareWithCurrentFigure(Figure activeFigure)
+    public Figure GetCurrentFigure()
     {
-        if (IsAvaliblePosition(activeFigure))
+        return _currentFigure;
+    }
+    protected void CompareWithCurrentFigure()
+    {
+        if (Figure.ActiveFigure.PlayerId == _currentFigure.PlayerId)
         {
-            _currentFigure?.Deactivate();
-            return true;
+            Figure.ActiveFigure.SetStrength(Figure.ActiveFigure.Strength + _currentFigure.Strength);
         }
-        Debug.LogError("Текущая фигура меньше размещённой");
-        return false;
+        else
+        {
+            Figure.ActiveFigure.SetStrength(Figure.ActiveFigure.Strength - _currentFigure.Strength);
+        }
+        _currentFigure?.Deactivate();
+        MoveFigureOnPosition();
     }
     protected abstract void MoveFigureOnPosition();
 }

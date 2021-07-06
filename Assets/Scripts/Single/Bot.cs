@@ -3,13 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Bot : MonoBehaviour
+public class Bot : MonoBehaviour, IDifficaltySwitcher
 {
     private Game _game => FindObjectOfType<Game>();
     private Board _board => FindObjectOfType<Board>();
+    private int _difficalty => PlayerPrefs.GetInt("DifficultyValue", 0);
+    private Difficalty _currentDifficalty;
+    private List<Difficalty> _allDifficaltys;
     void Start()
     {
-        var wait = StartCoroutine(WaitForTurn());
+        _allDifficaltys = new List<Difficalty>()
+        {
+            new Beginner(_game,_board,this),
+            new Intermidiate(_game,_board,this),
+            new Hard(_game,_board,this)
+        };
+        _currentDifficalty = _allDifficaltys[_difficalty];
+        StartCoroutine(WaitForTurn());
     }
     IEnumerator  WaitForTurn()
     {
@@ -17,23 +27,22 @@ public class Bot : MonoBehaviour
         {
             yield return new WaitUntil(() => PlayerSingle.Bot.IsMyTurn);
             yield return new WaitForSeconds(1);
-            var figure = GetRandomFigure();
-            var position = GetRandomPosition(figure);
+            _currentDifficalty.DecisionWhatToDo();
+            var figure = _currentDifficalty.DecisionFigure;
+            var cell = _currentDifficalty.DecisionCell;
             figure.Select();
             yield return new WaitForSeconds(1);
-            position.TryMoveFigure(PlayerSingle.Bot);
+            cell.TryMoveFigure(PlayerSingle.Bot);
             PlayerSingle.Bot.ItsNotMyTurn(true);
-            yield return new WaitUntil(() => PlayerSingle.Bot.IsMyTurn);
         }
     }
-    private Figure GetRandomFigure()
+    private void OnDestroy()
     {
-        var figures = PlayerSingle.Bot.Figures.Where(f => !f.isPlaced).ToList();
-        return figures.ElementAt(Random.Range(0, figures.Count));
+        StopAllCoroutines();
     }
-    private Cell GetRandomPosition(Figure figure)
+    public void Switch<T>() where T : Difficalty //не используется, остиавил чтобы запомнить паттерн Состояние
     {
-        var positions = _board.GetAvaliblePositions(figure);
-        return positions.ElementAt(Random.Range(0, positions.Count));
+        var state = _allDifficaltys.FirstOrDefault(s => s is T);
+        _currentDifficalty = state;
     }
 }

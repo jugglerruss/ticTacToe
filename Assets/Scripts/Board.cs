@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Board : MonoBehaviour
@@ -10,17 +11,29 @@ public class Board : MonoBehaviour
     [SerializeField]
     private Cell[] _cellsLine3;
 
-    private Cell[,] cells = new Cell[4, 4];
-    
-    public static Cell[,] Cells;
+    private Cell[,] _cells = new Cell[4, 4];    
+    public Cell[,] Cells { get; private set; }
+    public List<List<Cell>> Lines { get; private set; }
     private void Start()
     {
         for (var i = 1; i <= 3; i++) {
-            cells[1, i] = _cellsLine1[i-1];
-            cells[2, i] = _cellsLine2[i-1];
-            cells[3, i] = _cellsLine3[i-1];
+            _cells[1, i] = _cellsLine1[i-1];
+            _cells[2, i] = _cellsLine2[i-1];
+            _cells[3, i] = _cellsLine3[i-1];
         }
-        Cells = cells;
+        Cells = _cells;
+        Lines = new List<List<Cell>>()
+        {
+            new List<Cell>(){ _cells[1, 1],_cells[1, 2],_cells[1, 3]},
+            new List<Cell>(){ _cells[2, 1],_cells[2, 2],_cells[2, 3]},
+            new List<Cell>(){ _cells[3, 1],_cells[3, 2],_cells[3, 3]},
+            new List<Cell>(){ _cells[1, 1],_cells[2, 1],_cells[3, 1]},
+            new List<Cell>(){ _cells[1, 2],_cells[2, 2],_cells[3, 2]},
+            new List<Cell>(){ _cells[1, 3],_cells[2, 3],_cells[3, 3]},
+            new List<Cell>(){ _cells[1, 1],_cells[2, 2],_cells[3, 3]},
+            new List<Cell>(){ _cells[1, 3],_cells[2, 2],_cells[3, 1]},
+
+        };
     }
     public void ShowAvaliblePositions(Figure activeFigure)
     {
@@ -45,21 +58,35 @@ public class Board : MonoBehaviour
     }
     public int CheckLines()
     {        
-        for (var j = 1; j <= 3; j++)
-            if ( Cells[1, j].GetPlayerId() == Cells[2, j].GetPlayerId() && Cells[3, j].GetPlayerId() == Cells[2, j].GetPlayerId())
-                if(Cells[1, j].GetPlayerId()!=0)
-                    return Cells[1, j].GetPlayerId();
-        for (var i = 1; i <= 3; i++)
-            if ( Cells[i,1].GetPlayerId() == Cells[i,2].GetPlayerId() && Cells[i,3].GetPlayerId() == Cells[i,2].GetPlayerId())
-                if (Cells[i, 1].GetPlayerId() != 0)
-                    return Cells[i, 1].GetPlayerId();
-        if (Cells[1, 1].GetPlayerId() == Cells[2, 2].GetPlayerId() && Cells[2, 2].GetPlayerId() == Cells[3, 3].GetPlayerId())
-            if (Cells[1, 1].GetPlayerId() != 0)
-                return Cells[1, 1].GetPlayerId();
-        if (Cells[3, 1].GetPlayerId() == Cells[2, 2].GetPlayerId() && Cells[2, 2].GetPlayerId() == Cells[1, 3].GetPlayerId())
-            if (Cells[3, 1].GetPlayerId() != 0)
-                return Cells[3, 1].GetPlayerId();
-
+        foreach(var line in Lines)
+        {
+            if (line.Where(c => c.GetPlayerId() == 1).Count() == 3 ||
+                line.Where(c => c.GetPlayerId() == 2).Count() == 3)
+                return 1;
+        }
         return 0;
+    }
+    public List<List<Cell>> GetAvalibleLines(Figure figure)
+    {
+        List<List<Cell>> avalibleLines = new List<List<Cell>>();
+        foreach (var line in Lines)
+            if (line.Where(c => c.GetCurrentFigure() == figure).Count() == 1)
+                avalibleLines.Add(line);
+        return avalibleLines;
+    }
+    public List<Cell> GetLine(Figure figure1, Figure figure2)
+    {
+        foreach (var line in Lines)
+            if (line.Where(c => c.GetCurrentFigure() == figure1).Count() == 1 &&
+                line.Where(c => c.GetCurrentFigure() == figure2).Count() == 1)
+                return line;
+        return null;
+    }
+    public List<Cell> GetLinePlayerTwoFigures(int playerId)
+    {
+        foreach (var line in Lines)
+            if (line.Where(c => c.GetCurrentFigure() != null && c.GetCurrentFigure().PlayerId == playerId).Count() == 2)
+                return line;
+        return null;
     }
 }

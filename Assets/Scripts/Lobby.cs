@@ -15,7 +15,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     [SerializeField] private Text _logText;
     [SerializeField] private InputField _nickInput;
     [SerializeField] private Dropdown _singleDifficulty;
-    public string[] Difficultyes => new string[3]
+    public string[] Difficulties => new string[3]
     {
         "Beginner",
         "Intermidiate",
@@ -45,7 +45,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     }
     private void SetDifficulty()
     {
-        PlayerPrefs.SetString("DifficultyName", Difficultyes[_singleDifficulty.value]);
+        PlayerPrefs.SetString("DifficultyName", Difficulties[_singleDifficulty.value]);
         PlayerPrefs.SetInt("DifficultyValue", _singleDifficulty.value);
     }
     private void SetNickName()
