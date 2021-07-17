@@ -10,13 +10,22 @@ public class CellOnline : Cell
     private void RPC_ClickOnPosition(int activeFigureId)
     {
         var activeFigure = PhotonView.Find(activeFigureId).GetComponent<Figure>();
-        activeFigure.PlaceInPosition(transform.position);
-        _currentFigure = activeFigure;
-        if (!_game.CheckWin(_currentFigure))
+        var isPlayerOwner = (activeFigure as FigureOnline).PhotonView.IsMine;        
+        if(activeFigure.PlaceInPosition(transform.position))
         {
-            if ((_currentFigure as FigureOnline).PhotonView.IsMine)
+            _currentFigure = activeFigure;
+            if (!_game.CheckWin(_currentFigure))
+            {
+                if (isPlayerOwner)
+                    PlayerOnline.My.RPC_ItsNotMyTurn(true);
+            }
+        }
+        else
+        {
+            if (isPlayerOwner)
                 PlayerOnline.My.RPC_ItsNotMyTurn(true);
-        }        
+        }
+        
     }
     protected override void MoveFigureOnPosition()
     {

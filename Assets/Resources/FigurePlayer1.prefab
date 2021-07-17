@@ -88,7 +88,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882c2611ed97ca14784f729623e2f1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerId: 1
+  _playerId: 0
+  _strengthText: {fileID: 0}
 --- !u!1001 &5414880222998692861
 PrefabInstance:
   m_ObjectHideFlags: 0

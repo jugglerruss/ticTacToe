@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,7 +19,8 @@ public abstract class Figure : MonoBehaviour
     #endregion
 
     #region Inpector Variables
-    [SerializeField] public int PlayerId;
+    [SerializeField] private int _playerId;
+    [SerializeField] private TextMeshPro _strengthText;
     #endregion
 
     #region Public Properties
@@ -29,6 +31,13 @@ public abstract class Figure : MonoBehaviour
         get
         {
             return _placed;
+        }
+    }
+    public int PlayerId
+    {
+        get
+        {
+            return _playerId;
         }
     }
     #endregion
@@ -84,6 +93,7 @@ public abstract class Figure : MonoBehaviour
     {
         transform.localScale = new Vector3(SCALE_FIGURE, SCALE_FIGURE, SCALE_FIGURE) * (strength+4);
         Strength = strength;
+        _strengthText.text = Strength.ToString();
     }
     public void Select()
     {
@@ -93,13 +103,19 @@ public abstract class Figure : MonoBehaviour
         _rb.isKinematic = true;
         SelectAnimation(_selected);
     }
-    public void PlaceInPosition(Vector3 cellPosition)
+    public bool PlaceInPosition(Vector3 cellPosition)
     {
         Deselect();
         transform.position = cellPosition + new Vector3(0, 1);
         _placed = true;
         PlaceAnimation(_placed);
         ActiveFigure = null;
+        if (Strength == 0)
+        {
+            Deactivate();
+            return false;
+        }
+        return true;
     }
     public bool CheckOwner(Player player)
     {

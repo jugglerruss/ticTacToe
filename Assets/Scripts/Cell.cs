@@ -61,6 +61,7 @@ public abstract class Cell : MonoBehaviour
             Figure.ActiveFigure.SetStrength(Figure.ActiveFigure.Strength - _currentFigure.Strength);
         }
         _currentFigure?.Deactivate();
+        _currentFigure = null;
         MoveFigureOnPosition();
     }
     protected abstract void MoveFigureOnPosition();

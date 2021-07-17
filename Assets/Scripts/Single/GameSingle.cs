@@ -6,18 +6,26 @@ public class GameSingle : Game
 {
     [SerializeField] private Transform _playerPrefab1;
     [SerializeField] private Transform _playerPrefab2;
+    [SerializeField] private Camera _camera;
     private void Start()
     {
         GameType = "Single";
-
+        var playerId = PlayerPrefs.GetInt("playerId", 2);
+        if (playerId == 1)
+            playerId = 2;
+        else
+            playerId = 1;
+        PlayerPrefs.SetInt("playerId", playerId);
         GameObject player;
-        player = InstantiatePlayer(true);
+        var isFirst = playerId == 1 ? true : false;
+        player = InstantiatePlayer(isFirst);
         PlayerSingle.My = player.GetComponent<PlayerSingle>();
+        PutCameraToPosition();
         PlayerSingle.My.ItsMyTurn(false);
         PlayerSingle.My.NoFiguresDraw += Player_NoFiguresDraw;
         _ui.SetMyNickName(PlayerPrefs.GetString("NickName", "Player"));
 
-        player = InstantiatePlayer(false);
+        player = InstantiatePlayer(!isFirst);
         player.AddComponent<Bot>();
         PlayerSingle.Bot = player.GetComponent<PlayerSingle>();
         _ui.SetBotName(PlayerPrefs.GetString("DifficultyName", ""));
@@ -45,4 +53,10 @@ public class GameSingle : Game
             PlayerSingle.Bot.Lose();
     }
 
+    private void PutCameraToPosition()
+    {
+        var cameraPos = Player.My.GetCameraPosition();
+        _camera.transform.position = cameraPos.position - Player.My.transform.position;
+        _camera.transform.rotation = cameraPos.rotation;
+    }
 }
