@@ -1,63 +1,48 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class Game : MonoBehaviour
+public class Game : MonoBehaviour
 {
-    [SerializeField] protected UnityEvent OnWin;
-    [SerializeField] protected UnityEvent OnLose;
-    [SerializeField] protected UnityEvent OnDraw;
     [SerializeField] protected UI _ui;
-    public bool isOver { get; protected set; }
-    protected Board _board => FindObjectOfType<Board>();
-    protected List<Player> _players = new List<Player>();
-    public virtual string GameType { get; set; }
+    private int _score = 0;
+    private int _highScore;
+    private Color _colorPortal;
+    private ColorChanger _colorChanger;
 
-    public bool CheckWin(Figure currentFigure)
+    private void Start()
     {
-        if (_board.CheckLines() != 0)
+        _colorChanger = GetComponent<ColorChanger>();
+        _highScore = PlayerPrefs.GetInt("Highscore", 0);
+        _ui.SetHighScore(_highScore);
+        _colorPortal = _colorChanger.SetRandomColor();
+    }
+    public void OnCellClick(Color color)
+    {
+        if(color == _colorPortal)
         {
-            isOver = true;
-            if (currentFigure.CheckOwner(Player.My))
-            {
-                Player.My.Victory();
-                OnWin.Invoke();
-                AnimateBot(false);
-            }
-            else
-            {
-                Player.My.Lose();
-                OnLose.Invoke();
-                AnimateBot(true);
-            }
+            _score++;
+            if (_highScore < _score) SetHighScore();
+            AudioManager.Instance.PlayPop();
         }
-        return false;
+        else
+        {
+            _score = 0;
+            AudioManager.Instance.PlayFailPop();
+        }
+        _ui.SetScore(_score);
+        _colorPortal = _colorChanger.SetRandomColor();
     }
-
-    protected void Player_NoFiguresDraw()
+    private void SetHighScore()
     {
-        OnDraw.Invoke();
+        _ui.SetHighScore(_score);
+        PlayerPrefs.SetInt("Highscore", _score);
     }
 
-    public void SetScoreWin()
+    public void BackToLobby()
     {
-        PlayerPrefs.SetInt("score" + GameType + "Win", PlayerPrefs.GetInt("score" + GameType + "Win", 0) + 1);
-        _ui.SetScoreInfo(GameType);
+        SceneManager.LoadScene(0);
     }
-
-    public void SetScoreLose()
-    {
-        PlayerPrefs.SetInt("score" + GameType + "Lose", PlayerPrefs.GetInt("score" + GameType + "Lose", 0) + 1);
-        _ui.SetScoreInfo(GameType);
-    }
-
-    public void SetScoreDraw()
-    {
-        PlayerPrefs.SetInt("score" + GameType + "Draw", PlayerPrefs.GetInt("score" + GameType + "Draw", 0) + 1);
-        _ui.SetScoreInfo(GameType);
-    }
-    protected virtual void AnimateBot(bool win){    }
-
 }

@@ -1,68 +1,52 @@
-using Photon.Pun;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(MeshRenderer))]
-public abstract class Cell : MonoBehaviour
+public class Cell : MonoBehaviour
 {
-    [SerializeField] protected Material _selectMaterial;
-    [SerializeField] protected Material _defaultMaterial;
+    [SerializeField] private MeshRenderer _sphare;
+    [SerializeField] private MeshRenderer _body;
+    [SerializeField] private UnityEvent _clicked;
+    [SerializeField] private List<Material> _materials;
 
-    protected Figure _currentFigure;
-    protected MeshRenderer _meshRender => GetComponent<MeshRenderer>();
-    protected Game _game => FindObjectOfType<Game>();
-    protected void OnMouseDown()
+    private bool _isClicked = false;
+    private Game _game => FindObjectOfType<Game>();
+    public event UnityAction Clicked
     {
-        TryMoveFigure(Player.My);
+        add => _clicked.AddListener(value);
+        remove => _clicked.RemoveListener(value);
     }
-    public bool TryMoveFigure(Player player)
+    private void OnMouseDown()
     {
-        if (player.IsMyTurn && Figure.ActiveFigure != null && IsAvaliblePosition(Figure.ActiveFigure))
-        {
-            if (_currentFigure == null)
-                MoveFigureOnPosition();
-            else
-                CompareWithCurrentFigure();
-                 
-            return true;
-        }
-        return false;
-    }
-    public void DoSelect(Figure activeFigure)
-    {
-        if (IsAvaliblePosition(activeFigure))
-            _meshRender.sharedMaterial = _selectMaterial;
-    }
-    public bool IsAvaliblePosition(Figure activeFigure)
-    {
-        return _currentFigure == null || activeFigure.Strength >= _currentFigure.Strength || activeFigure.PlayerId == _currentFigure.PlayerId;           
-    }
-    public void DeSelect()
-    {
-        _meshRender.sharedMaterial = _defaultMaterial;
-    }
-    public int GetPlayerId()
-    {
-        if(_currentFigure!=null) return _currentFigure.PlayerId;
-        return 0;
-    }
-    public Figure GetCurrentFigure()
-    {
-        return _currentFigure;
-    }
-    protected void CompareWithCurrentFigure()
-    {
-        if (Figure.ActiveFigure.PlayerId == _currentFigure.PlayerId)
-        {
-            Figure.ActiveFigure.SetStrength(Figure.ActiveFigure.Strength + _currentFigure.Strength);
-        }
+        if (_isClicked)
+            return;
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            LobbyClick();
         else
-        {
-            Figure.ActiveFigure.SetStrength(Figure.ActiveFigure.Strength - _currentFigure.Strength);
-        }
-        _currentFigure?.Deactivate();
-        _currentFigure = null;
-        MoveFigureOnPosition();
+            PressCell();
     }
-    protected abstract void MoveFigureOnPosition();
+    public void PressCell()
+    {
+        _sphare.gameObject.SetActive(false);
+        _isClicked = true;
+        _game.OnCellClick(_body.material.color);
+    }
+
+    private void LobbyClick()
+    {
+        SetRandomMaterial();
+        _sphare.gameObject.SetActive(false);        
+        _isClicked = true;
+        AudioManager.Instance.PlayPop();
+    }
+
+    public void SetRandomMaterial()
+    {
+        var rand = Random.Range(0, _materials.Count);
+        var material = _materials.ElementAt(rand);
+        _body.material = material;
+        _sphare.material = material;
+    }
 }

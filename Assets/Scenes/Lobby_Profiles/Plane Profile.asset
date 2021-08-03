@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b924e2dad56384a8df2a1e111bb675, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
@@ -58,19 +58,19 @@ MonoBehaviour:
     value: 0
   color:
     overrideState: 1
-    value: {r: 1, g: 0.7607203, b: 0.14117646, a: 1}
+    value: {r: 1, g: 0.14117646, b: 0.14117646, a: 1}
   center:
     overrideState: 1
-    value: {x: 0.5, y: 0.5}
+    value: {x: 0.5, y: 0}
   intensity:
     overrideState: 1
-    value: 0.624
+    value: 0
   smoothness:
     overrideState: 1
-    value: 0.324
+    value: 0.345
   roundness:
     overrideState: 1
-    value: 0
+    value: 1
   rounded:
     overrideState: 1
     value: 0
@@ -110,19 +110,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1cb7e9e120078f43bce4f0b1be547a7, type: 3}
   m_Name: AmbientOcclusion
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
-    value: 1
+    value: 0
   mode:
     overrideState: 1
     value: 0
   intensity:
     overrideState: 1
-    value: 0.48
+    value: 1.15
   color:
     overrideState: 1
-    value: {r: 0.0021804918, g: 0.002472076, b: 0.066037714, a: 1}
+    value: {r: 1, g: 0, b: 0.85638046, a: 1}
   ambientOnly:
     overrideState: 1
     value: 1
@@ -165,7 +165,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 0.97
+    value: 18.95
   threshold:
     overrideState: 1
     value: 0
