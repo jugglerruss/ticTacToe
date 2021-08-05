@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Game : MonoBehaviour
 {
@@ -17,11 +14,18 @@ public class Game : MonoBehaviour
         _colorChanger = GetComponent<ColorChanger>();
         _highScore = PlayerPrefs.GetInt("Highscore", 0);
         _ui.SetHighScore(_highScore);
-        _colorPortal = _colorChanger.SetRandomColor();
+        SetColor();
     }
-    public void OnCellClick(Color color)
+
+    public void SetColor()
     {
-        if(color == _colorPortal)
+        _colorPortal = _colorChanger.SetRandomColor(_colorPortal);
+    }
+
+    public bool CompareColors(Color color)
+    {
+        var isEqual = color == _colorPortal;
+        if (isEqual)
         {
             _score++;
             if (_highScore < _score) SetHighScore();
@@ -30,10 +34,12 @@ public class Game : MonoBehaviour
         else
         {
             _score = 0;
+            Handheld.Vibrate();
             AudioManager.Instance.PlayFailPop();
         }
         _ui.SetScore(_score);
-        _colorPortal = _colorChanger.SetRandomColor();
+        SetColor();
+        return isEqual;
     }
     private void SetHighScore()
     {
@@ -43,6 +49,7 @@ public class Game : MonoBehaviour
 
     public void BackToLobby()
     {
+        AudioManager.Instance.PlayUIclick();
         SceneManager.LoadScene(0);
     }
 }

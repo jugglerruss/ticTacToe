@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,9 +22,9 @@ public class ColorChanger : MonoBehaviour
         _teleportlOut.Play();
         _teleportlLight.color = color;
     }
-    public Color SetRandomColor()
+    public Color SetRandomColor(Color color)
     {
-        var material = _cellsMaterials.ElementAt(Random.Range(0, _cellsMaterials.Count));
+        var material = _cellsMaterials.Where(m => m.color != color).ElementAt(Random.Range(0, _cellsMaterials.Count-1));
         SetMaterialTint(material.color);
         return material.color;
     }

@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioSource _backgroundMusic; 
     [SerializeField] private AudioSource _popSource; 
+    [SerializeField] private AudioSource _portalSource; 
+    [SerializeField] private AudioSource _UISource; 
     [SerializeField] private AudioClip[] _popSounds; 
-    [SerializeField] private AudioClip[] _popFailSounds; 
+    [SerializeField] private AudioClip[] _popFailSounds;
+    
     private static AudioManager instance;
     public static AudioManager Instance
     {
@@ -39,14 +40,29 @@ public class AudioManager : MonoBehaviour
     }
     public void PlayPop()
     {
-        _popSource.pitch = 1f;
+        _popSource.pitch = Random.Range(1, 1.5f);
         _popSource.clip = _popSounds[Random.Range(0, _popSounds.Length)];
         _popSource.Play();
     }
     public void PlayFailPop()
     {
-        _popSource.pitch = 0.5f;
+        _popSource.pitch = Random.Range(0.3f, 0.6f);
         _popSource.clip = _popFailSounds[Random.Range(0, _popFailSounds.Length)];
         _popSource.Play();
+    }
+    public void PlayPortal()
+    {
+        _portalSource.Play();
+    }
+    public void PlayUIclick()
+    {
+        _UISource.Play();
+    }
+    public void MuteMusic(bool mute)
+    {
+        if(mute)
+            _backgroundMusic.Stop();
+        else
+            _backgroundMusic.Play();
     }
 }

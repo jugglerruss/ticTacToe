@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Cell : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem _particleClick;
     [SerializeField] private MeshRenderer _sphare;
     [SerializeField] private MeshRenderer _body;
     [SerializeField] private UnityEvent _clicked;
@@ -31,15 +32,30 @@ public class Cell : MonoBehaviour
     {
         _sphare.gameObject.SetActive(false);
         _isClicked = true;
-        _game.OnCellClick(_body.material.color);
+        if (_game.CompareColors(_body.material.color))
+            ShowEffect();
     }
-
+    public void ShoeHideLobby(bool show)
+    {
+        if (show)
+        {
+            _isClicked = false;
+            _sphare.gameObject.SetActive(show);
+        }        
+    }
     private void LobbyClick()
     {
+        ShowEffect();
         SetRandomMaterial();
-        _sphare.gameObject.SetActive(false);        
+        _sphare.gameObject.SetActive(false);
         _isClicked = true;
         AudioManager.Instance.PlayPop();
+    }
+
+    private void ShowEffect()
+    {
+        var particleMain = Instantiate(_particleClick, transform).main;
+        particleMain.startColor = _body.material.color;
     }
 
     public void SetRandomMaterial()

@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487169619761185417}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -0.00053}
-  m_LocalScale: {x: 0.016, y: 0.016, z: 0.016}
+  m_LocalPosition: {x: 0, y: 0, z: -0.001}
+  m_LocalScale: {x: 0.028, y: 0.028, z: 0.028}
   m_Children: []
   m_Father: {fileID: 2009118974547863868}
   m_RootOrder: 0
@@ -111,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 1200776359318418310}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 2, z: 0}
-  m_LocalScale: {x: 104.32684, y: 104.32684, z: 104.32684}
+  m_LocalScale: {x: 62.5, y: 62.5, z: 62.5}
   m_Children:
   - {fileID: 6574439983356662460}
   m_Father: {fileID: 0}
@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a69a0fafa87c304d875af21e04d5607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _particleClick: {fileID: 6918593947135096533, guid: e1192067150f1e34c8cc0ebaa87718c8, type: 3}
   _sphare: {fileID: 3456960486229322958}
   _body: {fileID: 840765534939370067}
   _clicked:
@@ -200,7 +201,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: d3e75e3b934447643a9e82a91b53d079, type: 2}
   - {fileID: 2100000, guid: bd3430dbba3c51b42a42aa48d3a6c806, type: 2}
   - {fileID: 2100000, guid: 69c13b39b2771234091126d55ff4d261, type: 2}
-  _popSound: {fileID: 0}
 --- !u!54 &-6327351154361455682
 Rigidbody:
   m_ObjectHideFlags: 0

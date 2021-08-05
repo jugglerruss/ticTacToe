@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class DecorativeBoard : MonoBehaviour
@@ -35,8 +33,6 @@ public class DecorativeBoard : MonoBehaviour
                     cell.transform.position.x + i * 2.1f,
                     cell.transform.position.y,
                     cell.transform.position.z + j * 2.1f);
-
-                if (i > 4) cell.gameObject.SetActive(false);
             }
         }
     }
@@ -58,8 +54,6 @@ public class DecorativeBoard : MonoBehaviour
                 MoveBoard(transform.position.x, showHideMeter, step, 1);
                 yield return new WaitForEndOfFrame();
             }
-
-
         }
     }
     private void MoveBoard(float position, float meter,float step, int direction)
@@ -71,8 +65,8 @@ public class DecorativeBoard : MonoBehaviour
         {
             for (var j = 0; j < _cellsColumnCount; j++)
             {
-                _cells[abs + 4, j].gameObject.SetActive(right);
-                _cells[abs - 1, j].gameObject.SetActive(!right);
+                _cells[abs + 4, j].ShoeHideLobby(right);
+                _cells[abs - 1, j].ShoeHideLobby(!right);
             }
         }
         transform.position = new Vector3(transform.position.x + direction * step, transform.position.y, transform.position.z);
