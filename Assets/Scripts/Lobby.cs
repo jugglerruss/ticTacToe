@@ -6,6 +6,7 @@ public class Lobby: MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _highScore;
     [SerializeField] private Camera _camera;
+    [SerializeField] private LobbyUI _ui;
     [Range(0,5)] [SerializeField] private int _quality;
     private void Start()
     {
@@ -13,7 +14,10 @@ public class Lobby: MonoBehaviour
         QualitySettings.SetQualityLevel(_quality);
         Application.targetFrameRate = 60;
 
-        string nickName = PlayerPrefs.GetString("NickName", "Player " + Random.Range(1000, 9999));
+        var mute = PlayerPrefs.GetInt("mute", 0) == 1;
+        AudioManager.Instance.MuteMusic(mute);
+        _ui.ShowHideMuteButtons(mute);
+
         PlayerPrefs.SetInt("CellsRowCount", 9);
         PlayerPrefs.SetInt("CellsColumnCount", 4);
         SetScoreInfo();

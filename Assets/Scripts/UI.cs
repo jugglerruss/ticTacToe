@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
-    [SerializeField] private Text WinLoseText;
-    [SerializeField] private Button ButtonReset;
     [SerializeField] private TextMeshProUGUI _score;
     [SerializeField] private TextMeshProUGUI _highScore;
 

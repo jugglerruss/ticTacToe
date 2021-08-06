@@ -5,6 +5,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource _backgroundMusic; 
     [SerializeField] private AudioSource _popSource; 
     [SerializeField] private AudioSource _portalSource; 
+    [SerializeField] private AudioSource _dragSource; 
     [SerializeField] private AudioSource _UISource; 
     [SerializeField] private AudioClip[] _popSounds; 
     [SerializeField] private AudioClip[] _popFailSounds;
@@ -27,7 +28,7 @@ public class AudioManager : MonoBehaviour
             return instance;
         }
     }
-    void Awake()
+    private void Awake()
     {
         if (instance == null)
             DontDestroyOnLoad(gameObject);
@@ -38,9 +39,9 @@ public class AudioManager : MonoBehaviour
     {
         _backgroundMusic.Play();
     }
-    public void PlayPop()
+    public void PlayPop(int counter)
     {
-        _popSource.pitch = Random.Range(1, 1.5f);
+        _popSource.pitch = 1.1f - counter * 0.1f;
         _popSource.clip = _popSounds[Random.Range(0, _popSounds.Length)];
         _popSource.Play();
     }
@@ -54,13 +55,31 @@ public class AudioManager : MonoBehaviour
     {
         _portalSource.Play();
     }
+    public void PlayDrag()
+    {
+        if (_backgroundMusic.isPlaying)
+        {
+            _backgroundMusic.pitch = 2.5f;
+            _backgroundMusic.volume = 1;
+        }
+            
+    }
+    public void StopDrag()
+    {
+        if (_backgroundMusic.isPlaying)
+        {
+            _backgroundMusic.pitch = 1;
+            _backgroundMusic.volume = 0.5f;
+        }
+    }
     public void PlayUIclick()
     {
         _UISource.Play();
     }
     public void MuteMusic(bool mute)
     {
-        if(mute)
+        PlayerPrefs.SetInt("mute", mute ? 1 : 0);
+        if (mute)
             _backgroundMusic.Stop();
         else
             _backgroundMusic.Play();

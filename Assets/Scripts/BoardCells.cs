@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardCells : MonoBehaviour
@@ -9,7 +10,8 @@ public class BoardCells : MonoBehaviour
     [SerializeField] private int _cellsRowCount;
     [SerializeField] private float _cellsWidth;
     [SerializeField] private float _startSpeed;
-
+    [SerializeField] private float _step;
+    private List<bool> _isInsert = new List<bool>();
     private void Start()
     {
 
@@ -21,19 +23,21 @@ public class BoardCells : MonoBehaviour
     }
     private IEnumerator Move()
     {
+        _isInsert.Add(false);
         while (true)
         {
-            MoveBoard(transform.position.x, _startSpeed);
-            yield return new WaitForEndOfFrame();          
-
+            MoveBoard(transform.position.x, _step * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+            Debug.Log(Time.deltaTime);
         }
     }
     private void MoveBoard(float position, float step)
     {
-        var surplus = position % _cellsWidth;
         var i = Mathf.Abs((int)(position / _cellsWidth));
-        if (surplus <= step && i > 0)
-        {
+        if (!_isInsert[i])
+        { 
+            _isInsert[i] = true;
+            _isInsert.Add(false);
             for (var j = 0; j < _cellsColumnCount; j++)
             {
                 CreateCell(i, j);

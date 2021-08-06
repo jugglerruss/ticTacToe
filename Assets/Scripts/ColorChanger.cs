@@ -13,11 +13,12 @@ public class ColorChanger : MonoBehaviour
     {
         var main = _teleportlIn.main;
         _teleportlIn.Stop();
+        color.a = 0.5f;
         main.startColor = color;
         _teleportlIn.Play();
         _teleportlOut.Stop();
-        color.a = 0.1f;
         main = _teleportlOut.main;
+        color.a = 0.1f;
         main.startColor = color;
         _teleportlOut.Play();
         _teleportlLight.color = color;

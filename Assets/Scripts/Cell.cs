@@ -14,6 +14,8 @@ public class Cell : MonoBehaviour
 
     private bool _isClicked = false;
     private Game _game => FindObjectOfType<Game>();
+    public Color Color => _body.material.color;
+    public bool IsClicked => _isClicked;
     public event UnityAction Clicked
     {
         add => _clicked.AddListener(value);
@@ -49,7 +51,7 @@ public class Cell : MonoBehaviour
         SetRandomMaterial();
         _sphare.gameObject.SetActive(false);
         _isClicked = true;
-        AudioManager.Instance.PlayPop();
+        AudioManager.Instance.PlayPop(0);
     }
 
     private void ShowEffect()
