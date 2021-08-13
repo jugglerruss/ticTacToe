@@ -65,8 +65,8 @@ public class DecorativeBoard : MonoBehaviour
         {
             for (var j = 0; j < _cellsColumnCount; j++)
             {
-                _cells[abs + 4, j].ShoeHideLobby(right);
-                _cells[abs - 1, j].ShoeHideLobby(!right);
+                _cells[abs + 4, j].ShowHideLobby(right);
+                _cells[abs - 1, j].ShowHideLobby(!right);
             }
         }
         transform.position = new Vector3(transform.position.x + direction * step, transform.position.y, transform.position.z);

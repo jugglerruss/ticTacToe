@@ -14,15 +14,24 @@ public class Drag : MonoBehaviour
         }
         else
         {
-            AudioManager.Instance.StopDrag();
-            Time.timeScale = 1f;
+            StopCoroutine(SlowDown());
+            StartCoroutine(SlowDown());
         }
             
         _position = Input.mousePosition.y;
     }
     private void OnMouseUp()
     {
+        StopCoroutine(SlowDown());
+        StartCoroutine(SlowDown());
+    }
+    private IEnumerator SlowDown()
+    {
+        while (Time.timeScale > 1)
+        {
+            Time.timeScale -= 0.01f;
+            yield return new WaitForEndOfFrame();
+        }
         AudioManager.Instance.StopDrag();
-        Time.timeScale = 1f;
     }
 }

@@ -34,10 +34,10 @@ public class Cell : MonoBehaviour
     {
         _sphare.gameObject.SetActive(false);
         _isClicked = true;
-        if (_game.CompareColors(_body.material.color))
+        if (_game.CompareColors(this))
             ShowEffect();
     }
-    public void ShoeHideLobby(bool show)
+    public void ShowHideLobby(bool show)
     {
         if (show)
         {

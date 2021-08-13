@@ -10,7 +10,6 @@ public class BoardCells : MonoBehaviour
     [SerializeField] private int _cellsRowCount;
     [SerializeField] private float _cellsWidth;
     [SerializeField] private float _startSpeed;
-    [SerializeField] private float _step;
     private List<bool> _isInsert = new List<bool>();
     private void Start()
     {
@@ -26,9 +25,8 @@ public class BoardCells : MonoBehaviour
         _isInsert.Add(false);
         while (true)
         {
-            MoveBoard(transform.position.x, _step * Time.deltaTime);
+            MoveBoard(transform.position.x, _startSpeed * Time.deltaTime);
             yield return new WaitForEndOfFrame();
-            Debug.Log(Time.deltaTime);
         }
     }
     private void MoveBoard(float position, float step)

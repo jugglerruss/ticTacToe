@@ -6,6 +6,7 @@ using System.Collections;
 public class Game : MonoBehaviour
 {
     [SerializeField] protected UI _ui;
+    [SerializeField] protected BonusScore _bonusScore;
     private int _score = 0;
     private int _portalCounter = 0;
     private int _portalCounterMax = 0;
@@ -49,33 +50,39 @@ public class Game : MonoBehaviour
         AudioManager.Instance.PlayPortal();
     }
 
-    public bool CompareColors(Color color)
+    public bool CompareColors(Cell cell)
     {
-        var isEqual = color == _colorPortal;
+        var isEqual = cell.Color == _colorPortal;
         if (isEqual)
-        {
-            AudioManager.Instance.PlayPop(_portalCounter - _portalCounterMax);
-            _portalCounter--;
-            _score++;
-            if (_portalCounter == 0 && _portalCounterMax > 3) _score += _portalCounterMax;
-            if (_highScore < _score) SetHighScore();
-        }
+            AddScore(cell);
         else
-        {
-            _score = 0;
-            Handheld.Vibrate();
-            AudioManager.Instance.PlayFailPop();
-            _portalCounter = 0;
-        }
+            ZeroScore();
+
         _ui.SetScore(_score);
         if(_portalCounter == 0) SetColor();
         return isEqual;
     }
-    private void SetHighScore()
+
+    private void ZeroScore()
     {
-        _ui.SetHighScore(_score);
-        PlayerPrefs.SetInt("Highscore", _score);
+        _score = 0;
+        Handheld.Vibrate();
+        AudioManager.Instance.PlayFailPop();
+        _portalCounter = 0;
     }
+
+    private void AddScore(Cell cell)
+    {
+        AudioManager.Instance.PlayPop(_portalCounter - _portalCounterMax);
+        _portalCounter--;
+        _score++;
+        if (_portalCounter == 0 && _portalCounterMax > 3)
+        {
+            _score += _portalCounterMax;
+            _bonusScore.Activate(_portalCounterMax, cell);
+        }
+    }
+
 
     public void BackToLobby()
     {
