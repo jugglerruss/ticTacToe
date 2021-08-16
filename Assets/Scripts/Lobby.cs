@@ -42,6 +42,7 @@ public class Lobby: MonoBehaviour
     public void QuitApp()
     {
         AudioManager.Instance.PlayUIclick();
+        PlayServices.Instance.Quit();
         Application.Quit();
     }
 }

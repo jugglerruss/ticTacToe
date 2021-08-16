@@ -9,11 +9,11 @@ public class Education : MonoBehaviour
     [SerializeField] private float  _stopPointX;
     [SerializeField] private float  _endPointX;
     [SerializeField] private GameObject _portal;
-    [SerializeField] private bool _portalDone;
+    private bool _portalDone => PlayerPrefs.GetInt("portalEducation", 0) == 1;
     [SerializeField] private GameObject _toch;
-    [SerializeField] private bool _tochDone;
+    private bool _tochDone => PlayerPrefs.GetInt("tochEducation", 0) == 1;
     [SerializeField] private GameObject _swipe;
-    [SerializeField] private bool _swipeDone;
+    private bool _swipeDone => PlayerPrefs.GetInt("swipeEducation", 0) == 1;
     [SerializeField] private GameObject _hand;
     [SerializeField] private float _handStopY;
     void Start()
@@ -33,7 +33,7 @@ public class Education : MonoBehaviour
         yield return new WaitForSeconds(1);
         yield return StartCoroutine(MoveForward(_toch, 30, _speed / 5));
         _toch.gameObject.SetActive(false);
-        _tochDone = true;
+        PlayerPrefs.SetInt("tochEducation", 1);
         StartCoroutine(MovePortal());
     }
     private IEnumerator MovePortal()
@@ -42,7 +42,7 @@ public class Education : MonoBehaviour
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(MoveBack(_portal, _endPointX, _speed * 3));
         _portal.gameObject.SetActive(false);
-        _portalDone = true;
+        PlayerPrefs.SetInt("portalEducation", 1);
         StartCoroutine(MoveSwipe());
     }
     private IEnumerator MoveSwipe()
@@ -53,7 +53,7 @@ public class Education : MonoBehaviour
         _swipe.gameObject.SetActive(false);
         yield return StartCoroutine(MoveUp(_hand, _handStopY, _speed * 15));
         _hand.gameObject.SetActive(false);
-        _swipeDone = true;
+        PlayerPrefs.SetInt("swipeEducation", 1);
     }
     private IEnumerator MoveBack(GameObject obj, float stopPoint, float speed)
     {
