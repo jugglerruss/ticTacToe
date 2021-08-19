@@ -1,13 +1,16 @@
-using TMPro;
+using GoogleMobileAds.Api;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Lobby: MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _highScore;
     [SerializeField] private Camera _camera;
     [SerializeField] private LobbyUI _ui;
     [Range(0,5)] [SerializeField] private int _quality;
+    private void Awake()
+    {
+        MobileAds.Initialize(initStatus => { });
+    }
     private void Start()
     {
         QualitySettings.vSyncCount = 0;
@@ -20,12 +23,8 @@ public class Lobby: MonoBehaviour
 
         PlayerPrefs.SetInt("CellsRowCount", 9);
         PlayerPrefs.SetInt("CellsColumnCount", 4);
-        SetScoreInfo();
+        _ui.SetScoreInfo();
 
-    }
-    private void SetScoreInfo()
-    {
-        _highScore.text = PlayerPrefs.GetInt("Highscore", 0).ToString();
     }
     public void StartSingle()
     {

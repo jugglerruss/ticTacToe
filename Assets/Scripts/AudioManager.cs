@@ -39,9 +39,9 @@ public class AudioManager : MonoBehaviour
     {
         _backgroundMusic.Play();
     }
-    public void PlayPop(int counter)
+    public void PlayPop(float percent)
     {
-        _popSource.pitch = 1.1f - counter * 0.1f;
+        _popSource.pitch = 3f - percent * 2f;
         _popSource.clip = _popSounds[Random.Range(0, _popSounds.Length)];
         _popSource.Play();
     }

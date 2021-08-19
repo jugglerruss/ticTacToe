@@ -8,8 +8,9 @@
 /[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
+/[Aa]ssets/[Pp]lugins/
 /[Uu]ser[Ss]ettings/
-
+/[Aa]ssets/Firebase/[Pp]lugins/
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
