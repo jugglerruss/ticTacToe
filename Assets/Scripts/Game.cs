@@ -23,8 +23,6 @@ public class Game : MonoBehaviour
         _ui.SetHighScore(_highScore);
         StartCoroutine(StartSetColor());
     }
-
-
     private IEnumerator StartSetColor()
     {
         var stop = false;
@@ -44,55 +42,69 @@ public class Game : MonoBehaviour
     {
         var cells = FindObjectsOfType<Cell>();
         _portalCounter = 0;
-        while (_portalCounter <= 0 && cells.Length > 0)
+        while (_portalCounter == 0 && cells.Length > 0)
         {
-            _colorPortal = _colorChanger.SetRandomColor(_colorPortal);
-            _portalCounter = cells.Where(c => c.Color == _colorPortal && !c.IsClicked).Count();
+            foreach(Color color in _colorChanger.Colors)
+            {
+                var count = cells.Where(c => c.Color == color && !c.IsClicked).Count();
+                if (count > _portalCounter)
+                {
+                    _portalCounter = count;
+                    _colorPortal = color;
+                }                    
+            }
         }
+        _colorChanger.SetColor(_colorPortal);
         _portalCounterMax = _portalCounter;
-
         AudioManager.Instance.PlayPortal();
     }
-
     public bool CompareColors(Cell cell)
     {
         var isEqual = cell.Color == _colorPortal;
         if (isEqual)
             AddScore(cell);
         else
-            ZeroScore();
+            Pause();
 
-        _ui.SetScore(_score);
-        if(_portalCounter == 0) SetColor();
         return isEqual;
     }
-
-    private void ZeroScore()
+    private void Pause()
     {
-        _score = 0;
-        Handheld.Vibrate();
         AudioManager.Instance.PlayFailPop();
+        Handheld.Vibrate();
+        Time.timeScale = 0;
+        _ui.ShowPause(true);
+    }
+    public void Continue(bool isWatchAds)
+    {
+        if(!isWatchAds)
+            _score = 0;
+        _ui.SetScore(_score);
         _portalCounter = 0;
         _timeList.Clear();
+        Time.timeScale = 1;
+        _ui.ShowPause(false);
+        SetColor();
     }
-
     private void AddScore(Cell cell)
     {
-        AudioManager.Instance.PlayPop(_portalCounter - _portalCounterMax);
+        float percent = (float)_portalCounter / (float)_portalCounterMax;
+        AudioManager.Instance.PlayPop(percent);
         _portalCounter--;
         _score++;
+        _ui.SetScore(_score);
         if (_portalCounter == 0 && _portalCounterMax > 3)
         {
             _score += _portalCounterMax;
             _bonusScore.Activate(_portalCounterMax, cell);
         }
         if(_score > _highScore) SetHighScore();
-        CheckAchievementsScore();
-        CheckAchievementsPopsInARow();
+        if (_portalCounter == 0) SetColor();
+        CheckAchievements.Instance.CheckAchievementsScore(_score);
+        CheckAchievements.Instance.CheckAchievementsPopsInARow(_portalCounterMax - _portalCounter);
         _timeList.Add(Time.fixedTime);
-        CheckAchievementsPopsRightInSeconds();
+        CheckAchievements.Instance.CheckAchievementsPopsRightInSeconds(_timeList);
     }
-
     private void SetHighScore()
     {
         _highScore = _score;
@@ -100,72 +112,10 @@ public class Game : MonoBehaviour
         _ui.SetHighScore(_highScore);
         PlayServices.Instance.AddScoreToLeaderboard(_highScore);
     }
-
     public void BackToLobby()
     {
         AudioManager.Instance.PlayUIclick();
         SceneManager.LoadScene(0);
     }
-    private void CheckAchievementsScore()
-    {
-        string id;
-        switch (_score)
-        {
-            case 100:
-                id = GPS.achievement_first_pops;
-                break;
-            case 300:
-                id = GPS.achievement_300_spartanpops;
-                break;
-            case 666:
-                id = GPS.achievement_devil_number;
-                break;
-            case 1000:
-                id = GPS.achievement_legendary;
-                break;
-            case 9999:
-                id = GPS.achievement_godlike;
-                break;
-            default: return;
-        }
-        PlayServices.Instance.UnlockAchievement(id);
-    }
-    private void CheckAchievementsPopsInARow()
-    {
-        string id;
-        switch (_portalCounterMax - _portalCounter)
-        {
-            case 10:
-                id = GPS.achievement_10_pops__1_color;
-                break;
-            default: return;
-        }
-        PlayServices.Instance.UnlockAchievement(id);
-    }
-    private void CheckAchievementsPopsRightInSeconds()
-    {
-        string id = "";
-        if (PopsRightInSeconds(15, 5))
-            id = GPS.achievement_blow_up_in_5_seconds;
-        if (PopsRightInSeconds(30, 10))
-            id = GPS.achievement_blow_up_in_10_seconds;
-        if(id != "") PlayServices.Instance.UnlockAchievement(id);
-    }
-    private bool PopsRightInSeconds(int score, int seconds)
-    {
-        if (_timeList.Count >= score)
-        {
-            var timeDiff = _timeList.ElementAt(_timeList.Count-1) -
-                       _timeList.ElementAt(_timeList.Count - _timeList.Count);
-            Debug.Log(timeDiff);
-            if (timeDiff <= seconds)
-                return true;
-            else
-                return false;
-        }
-        else
-        {
-            return false;
-        }
-    }
+ 
 }

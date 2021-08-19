@@ -6,6 +6,7 @@ public class UI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _score;
     [SerializeField] private TextMeshProUGUI _highScore;
+    [SerializeField] private GameObject _pausePanel;
 
     public void SetScore(int score)
     {
@@ -14,5 +15,9 @@ public class UI : MonoBehaviour
     public void SetHighScore(int score)
     {
         _highScore.text = score.ToString();
+    }
+    public void ShowPause(bool show)
+    {
+        _pausePanel.SetActive(show);
     }
 }

@@ -53,29 +53,9 @@ public class Cell : MonoBehaviour
         _sphare.gameObject.SetActive(false);
         _isClicked = true;
         _clickCountLobby++;
-        AudioManager.Instance.PlayPop(0);
-        CheckAchievementsLobby(_clickCountLobby);
-    }
-
-    private void CheckAchievementsLobby(int clickCountLobby)
-    {
-        string id;
-        switch (clickCountLobby)
-        {
-            case 10:
-                id = GPS.achievement_relax;
-                break;
-            case 100:
-                id = GPS.achievement_super_relax;
-                break;
-            case 1000:
-                id = GPS.achievement_mega_relax;
-                break;
-            default: return;
-        }
-        PlayServices.Instance.UnlockAchievement(id);
-    }
-
+        AudioManager.Instance.PlayPop(1);
+        CheckAchievements.Instance.CheckAchievementsLobby(_clickCountLobby);
+    }  
     private void ShowEffect()
     {
         var particleMain = Instantiate(_particleClick, transform).main;

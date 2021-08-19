@@ -8,6 +8,7 @@ public class ColorChanger : MonoBehaviour
     [SerializeField] private ParticleSystem _teleportlOut;
     [SerializeField] private Light _teleportlLight;
     [SerializeField] private List<Material> _cellsMaterials;
+    public List<Color> Colors => _cellsMaterials.Select(m => m.color).ToList();
 
     public void SetMaterialTint(Color color)
     {
@@ -23,10 +24,9 @@ public class ColorChanger : MonoBehaviour
         _teleportlOut.Play();
         _teleportlLight.color = color;
     }
-    public Color SetRandomColor(Color color)
+    public Color SetColor(Color color)
     {
-        var material = _cellsMaterials.Where(m => m.color != color).ElementAt(Random.Range(0, _cellsMaterials.Count-1));
-        SetMaterialTint(material.color);
-        return material.color;
+        SetMaterialTint(color);
+        return color;
     }
 }
