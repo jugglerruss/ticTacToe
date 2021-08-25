@@ -2,27 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using System;
 
 public class RewardScoreAds : MonoBehaviour
 {
     [SerializeField] private string _rewardedUnitId;
+    [SerializeField] private string _rewardedUnitIdTest;
+    [SerializeField] private bool _isTest;
 
     private Game _game => FindObjectOfType<Game>();
     private RewardedAd _rewardedAd;
-    private void OnEnable()
+
+    public void ShowAd()
     {
-        _rewardedAd = new RewardedAd(_rewardedUnitId);
-        AdRequest adRequest = new AdRequest.Builder().Build();
-        _rewardedAd.LoadAd(adRequest);
+        RequestInterstitial();
+    }
+    private void RequestInterstitial()
+    {
+        if (_rewardedAd != null)
+            _rewardedAd.Destroy();
+
+        _rewardedAd = new RewardedAd(_isTest ? _rewardedUnitIdTest : _rewardedUnitId);
         _rewardedAd.OnUserEarnedReward += EarnedReward;
+        _rewardedAd.OnAdLoaded += HandOnAdLoaded;
+        _rewardedAd.LoadAd(CreateNewRequest());
+    }
+    private AdRequest CreateNewRequest()
+    {
+        return new AdRequest.Builder().Build();
+    }
+    private void HandOnAdLoaded(object sender, EventArgs args)
+    {
+        if (_rewardedAd.IsLoaded())
+            _rewardedAd.Show();
     }
     private void EarnedReward(object sender, Reward e)
     {
         _game.Continue(true);
-    }
-    public void ShowAd()
-    {
-        if (_rewardedAd.IsLoaded())
-            _rewardedAd.Show();
     }
 }

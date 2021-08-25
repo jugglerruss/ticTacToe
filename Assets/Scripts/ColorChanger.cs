@@ -29,4 +29,10 @@ public class ColorChanger : MonoBehaviour
         SetMaterialTint(color);
         return color;
     }
+    public Color SetRandomColor(Color currentColor)
+    {
+        var color = _cellsMaterials.Where(c => c.color != currentColor).ElementAt(Random.Range(0, _cellsMaterials.Count-1)).color;
+        SetMaterialTint(color);
+        return color;
+    }
 }

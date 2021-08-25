@@ -11,9 +11,10 @@ public class BoardCells : MonoBehaviour
     [SerializeField] private float _cellsWidth;
     [SerializeField] private float _startSpeed;
     private List<bool> _isInsert = new List<bool>();
+    private Game _game;
     private void Start()
     {
-
+        _game = FindObjectOfType<Game>();
         StartCoroutine(Move());
     }
     private void OnDestroy()
@@ -25,6 +26,7 @@ public class BoardCells : MonoBehaviour
         _isInsert.Add(false);
         while (true)
         {
+            _startSpeed = (float)_game.Score / 1000 + 1;
             MoveBoard(transform.position.x, _startSpeed * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }

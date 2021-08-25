@@ -14,7 +14,7 @@ public class Destroyer : MonoBehaviour
     {
         StopCoroutine(Zeroing());
         AudioManager.Instance.PlayPortal();
-        _game.SetColor();
+        _game.SetRandomColor();
         _clickCount++;
         CheckAchievements.Instance.CheckAchievementsHole(_clickCount);
         StartCoroutine(Zeroing());

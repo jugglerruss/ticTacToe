@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "301393224904",
+    "project_id": "endless-pop-it-antistress-2585",
+    "storage_bucket": "endless-pop-it-antistress-2585.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301393224904:android:abcbdbcbfa826eb8c831fd",
+        "android_client_info": {
+          "package_name": "com.Wolfhoundstudio.EndlessPopit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "301393224904-q5tv7uhbfdqqjcpgmjrgqheja0vfqq4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTV50Dol3Mnuc-ybZnwAyU9SIPnRA-k-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "301393224904-q5tv7uhbfdqqjcpgmjrgqheja0vfqq4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
