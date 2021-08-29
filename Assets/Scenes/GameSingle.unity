@@ -557,13 +557,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 10
-  _stopPointX: 32
+  _stopPointX: 36
   _endPointX: 0
   _portal: {fileID: 1688997538}
   _toch: {fileID: 166521513}
   _swipe: {fileID: 824270505}
   _hand: {fileID: 261281798}
   _handStopY: 300
+  _testEducation: 0
 --- !u!4 &210460168
 Transform:
   m_ObjectHideFlags: 0
@@ -3326,7 +3327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _banerUnitId: ca-app-pub-6106562308752391/3877705375
   _banerUnitIdTest: ca-app-pub-3940256099942544/6300978111
-  _isTest: 0
+  _isTest: 1
 --- !u!114 &2102278007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3340,8 +3341,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rewardedUnitId: ca-app-pub-6106562308752391/6120725337
-  _rewardedUnitIdTest: ca-app-pub-3940256099942544/5224354917
-  _isTest: 0
+  _rewardedUnitIdTest: 
+  _isTest: 1
 --- !u!4 &2102278008
 Transform:
   m_ObjectHideFlags: 0
@@ -3370,4 +3371,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interstitialUnitId: ca-app-pub-6106562308752391/5191760817
   _interstitialUnitIdTest: ca-app-pub-3940256099942544/1033173712
-  _isTest: 0
+  _isTest: 1

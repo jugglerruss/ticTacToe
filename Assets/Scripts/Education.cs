@@ -16,16 +16,27 @@ public class Education : MonoBehaviour
     private bool _swipeDone => PlayerPrefs.GetInt("swipeEducation", 0) == 1;
     [SerializeField] private GameObject _hand;
     [SerializeField] private float _handStopY;
+    [SerializeField] private bool _testEducation;
     void Start()
     {
-        if (!_tochDone) 
+        if (_testEducation)
+        {
             StartCoroutine(MoveToch());
+        }
         else
-            if (!_portalDone) 
-                StartCoroutine(MovePortal());
+        {
+            if (!_tochDone)
+            {
+                StartCoroutine(MoveToch());
+            }
             else
-                if(!_swipeDone) StartCoroutine(MoveSwipe());
-
+            {
+                if (!_portalDone)
+                    StartCoroutine(MovePortal());
+                else
+                    if (!_swipeDone) StartCoroutine(MoveSwipe());
+            }
+        }
     }
     private IEnumerator MoveToch()
     {

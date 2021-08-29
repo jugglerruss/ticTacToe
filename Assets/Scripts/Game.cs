@@ -83,7 +83,6 @@ public class Game : MonoBehaviour
         {
             AudioManager.Instance.PlayFailPop();
             Handheld.Vibrate();
-            Debug.Log(_tryCount);
             if (_tryCount > 0)
                 Pause();
             else

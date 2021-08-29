@@ -25,6 +25,7 @@ public class RewardScoreAds : MonoBehaviour
         _rewardedAd = new RewardedAd(_isTest ? _rewardedUnitIdTest : _rewardedUnitId);
         _rewardedAd.OnUserEarnedReward += EarnedReward;
         _rewardedAd.OnAdLoaded += HandOnAdLoaded;
+        _rewardedAd.OnAdFailedToLoad += HandOnFailedToLoad;
         _rewardedAd.LoadAd(CreateNewRequest());
     }
     private AdRequest CreateNewRequest()
@@ -39,5 +40,10 @@ public class RewardScoreAds : MonoBehaviour
     private void EarnedReward(object sender, Reward e)
     {
         _game.Continue(true);
+    }
+    private void HandOnFailedToLoad(object sender, EventArgs args)
+    {
+        _game.LoseScore();
+        _game.Continue(false);
     }
 }
