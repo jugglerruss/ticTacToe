@@ -13,9 +13,16 @@ public class InterstitialAds : MonoBehaviour
     private Game _game => FindObjectOfType<Game>();
     private InterstitialAd _interstitialAd;
 
-    public void ShowAd()
+    private void Start()
     {
         RequestInterstitial();
+    }
+    public void ShowAd()
+    {
+        if (_interstitialAd.IsLoaded())
+            _interstitialAd.Show();
+        else
+            _interstitialAd.OnAdLoaded += HandOnAdLoaded;
     }
     private void RequestInterstitial()
     {
@@ -23,8 +30,8 @@ public class InterstitialAds : MonoBehaviour
             _interstitialAd.Destroy();
 
         _interstitialAd = new InterstitialAd(_isTest ? _interstitialUnitIdTest : _interstitialUnitId);
-        _interstitialAd.OnAdLoaded += HandOnAdLoaded;
         _interstitialAd.OnAdClosed += ContinueGame;
+        _interstitialAd.OnAdFailedToLoad += HandOnFailedToLoad;
         _interstitialAd.LoadAd(CreateNewRequest());
     }
     private AdRequest CreateNewRequest()
@@ -36,9 +43,18 @@ public class InterstitialAds : MonoBehaviour
         if (_interstitialAd.IsLoaded())
             _interstitialAd.Show();
     }
+    private void HandOnFailedToLoad(object sender, EventArgs args)
+    {
+        Continue(false);
+    }
     private void ContinueGame(object sender, EventArgs args)
     {
+        Continue(true);
+    }
+    private void Continue(bool success)
+    {
+        RequestInterstitial();
         _game.LoseScore();
-        _game.Continue(true);
+        _game.Continue(success);
     }
 }

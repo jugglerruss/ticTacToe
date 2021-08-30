@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
 using System;
@@ -13,9 +11,16 @@ public class RewardScoreAds : MonoBehaviour
     private Game _game => FindObjectOfType<Game>();
     private RewardedAd _rewardedAd;
 
-    public void ShowAd()
+    private void Start()
     {
         RequestInterstitial();
+    }
+    public void ShowAd()
+    {
+        if (_rewardedAd.IsLoaded())
+            _rewardedAd.Show();
+        else
+            _rewardedAd.OnAdLoaded += HandOnAdLoaded;
     }
     private void RequestInterstitial()
     {
@@ -24,7 +29,6 @@ public class RewardScoreAds : MonoBehaviour
 
         _rewardedAd = new RewardedAd(_isTest ? _rewardedUnitIdTest : _rewardedUnitId);
         _rewardedAd.OnUserEarnedReward += EarnedReward;
-        _rewardedAd.OnAdLoaded += HandOnAdLoaded;
         _rewardedAd.OnAdFailedToLoad += HandOnFailedToLoad;
         _rewardedAd.LoadAd(CreateNewRequest());
     }
@@ -39,10 +43,12 @@ public class RewardScoreAds : MonoBehaviour
     }
     private void EarnedReward(object sender, Reward e)
     {
+        RequestInterstitial();
         _game.Continue(true);
     }
     private void HandOnFailedToLoad(object sender, EventArgs args)
     {
+        RequestInterstitial();
         _game.LoseScore();
         _game.Continue(false);
     }
