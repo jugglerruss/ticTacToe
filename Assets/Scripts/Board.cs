@@ -81,8 +81,8 @@ public class Board : MonoBehaviour
                 Cells[i, j].DeSelect();
     }
     public int CheckLines()
-    {        
-        foreach(var line in Lines)
+    {
+        foreach (var line in Lines)
         {
             if (line.Where(c => c.GetPlayerId() == 1).Count() == 3 ||
                 line.Where(c => c.GetPlayerId() == 2).Count() == 3)

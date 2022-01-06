@@ -10,6 +10,7 @@ public class CellOnline : Cell
     private void RPC_ClickOnPosition(int activeFigureId)
     {
         var activeFigure = PhotonView.Find(activeFigureId).GetComponent<Figure>();
+        Debug.LogError(activeFigure.PlayerId);
         var isPlayerOwner = (activeFigure as FigureOnline).PhotonView.IsMine;        
         if(activeFigure.PlaceInPosition(transform.position))
         {

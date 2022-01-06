@@ -20,7 +20,6 @@ public abstract class Figure : MonoBehaviour
 
     #region Inpector Variables
     [SerializeField] private int _playerId;
-    [SerializeField] private TextMeshPro _strengthText;
     #endregion
 
     #region Public Properties
@@ -93,7 +92,6 @@ public abstract class Figure : MonoBehaviour
     {
         transform.localScale = new Vector3(SCALE_FIGURE, SCALE_FIGURE, SCALE_FIGURE) * (strength+4);
         Strength = strength;
-        _strengthText.text = Strength.ToString();
     }
     public void Select()
     {

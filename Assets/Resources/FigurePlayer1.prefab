@@ -50,6 +50,24 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: isLose
+  - Type: 4
+    SynchronizeType: 0
+    Name: inLobby
+  - Type: 9
+    SynchronizeType: 0
+    Name: GetHit
+  - Type: 9
+    SynchronizeType: 0
+    Name: Attack
+  - Type: 4
+    SynchronizeType: 0
+    Name: isMyTurn
+  - Type: 4
+    SynchronizeType: 0
+    Name: isSelect
+  - Type: 4
+    SynchronizeType: 0
+    Name: isPlaced
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -88,8 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882c2611ed97ca14784f729623e2f1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerId: 0
-  _strengthText: {fileID: 0}
+  _playerId: 1
 --- !u!1001 &5414880222998692861
 PrefabInstance:
   m_ObjectHideFlags: 0

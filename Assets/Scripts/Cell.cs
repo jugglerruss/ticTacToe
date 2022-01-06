@@ -31,7 +31,7 @@ public abstract class Cell : MonoBehaviour
     public void DoSelect(Figure activeFigure)
     {
         if (IsAvaliblePosition(activeFigure))
-            _meshRender.sharedMaterial = _selectMaterial;
+            _meshRender.material = _selectMaterial;
     }
     public bool IsAvaliblePosition(Figure activeFigure)
     {
@@ -39,7 +39,7 @@ public abstract class Cell : MonoBehaviour
     }
     public void DeSelect()
     {
-        _meshRender.sharedMaterial = _defaultMaterial;
+        _meshRender.material = _defaultMaterial;
     }
     public int GetPlayerId()
     {
